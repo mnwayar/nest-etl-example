@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: etl_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: etl_user
+      POSTGRES_PASSWORD: etl_pass
+      POSTGRES_DB: etl_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - etl-net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: etl_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    networks:
+      - etl-net
+
+networks:
+  etl-net:
+
+volumes:
+  pgdata:

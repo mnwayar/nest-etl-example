@@ -1,0 +1,29 @@
+{
+  "collection": "@nestjs/schematics",
+  "monorepo": true,
+  "root": "apps",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true
+  },
+  "projects": {
+    "api": {
+      "type": "application",
+      "root": "apps/api",
+      "entryFile": "main",
+      "sourceRoot": "apps/api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api/tsconfig.json"
+      }
+    },
+    "etl-runner": {
+      "type": "application",
+      "root": "apps/etl-runner",
+      "entryFile": "main",
+      "sourceRoot": "apps/etl-runner/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/etl-runner/tsconfig.json"
+      }
+    }
+  }
+}
