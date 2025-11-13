@@ -1,4 +1,4 @@
-import { Company } from '../../../../core/domain/companies/company.entity';
+import { Company } from '@core/domain/companies/company.entity';
 
 export class CompanyListResponseDto {
   id!: string;

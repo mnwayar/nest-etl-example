@@ -1,8 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  CompanyRepository,
-  CompanyRepositoryToken,
-} from '../../../domain/companies/company.repository';
+import { CompanyRepository, CompanyRepositoryToken } from '@core/domain/companies/company.repository';
 import { Company } from '@core/domain/companies/company.entity';
 
 @Injectable()

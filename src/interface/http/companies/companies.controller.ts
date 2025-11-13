@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus, NotFoundException, Param } from '@nestjs/common';
-import { ListAllCompaniesUseCase } from '../../../core/application/companies/usecases/list-all-companies.usecase';
-import { GetCompanyDetailsUseCase } from '../../../core/application/companies/usecases/get-company-details.usecase';
+import { ListAllCompaniesUseCase } from '@core/application/companies/usecases/list-all-companies.usecase';
+import { GetCompanyDetailsUseCase } from '@core/application/companies/usecases/get-company-details.usecase';
 import { CompanyListResponseDto } from '../dtos/companies/company-list.response.dto';
 import { CompanyResponseDto } from '../dtos/companies/company.response.dto';
 

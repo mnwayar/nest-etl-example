@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { EtlRunnerModule } from './etl-runner.module';
-import { SyncHubspotCompaniesUseCase } from '../../../src/core/application/companies/usecases/sync-hubspot-companies.usecase';
+import { SyncHubspotCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-companies.usecase';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(EtlRunnerModule);

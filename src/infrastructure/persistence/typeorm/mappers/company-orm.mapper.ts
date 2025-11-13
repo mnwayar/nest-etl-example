@@ -1,11 +1,6 @@
-import { Company } from '../../../../core/domain/companies/company.entity';
+import { Company } from '@core/domain/companies/company.entity';
 import { CompanyOrmEntity } from '../entities/company.orm-entity';
-import {
-  trimOrNull,
-  trimLowerOrNull,
-  normalizePhone,
-  yearUtcOrNull,
-} from '../../../../shared/utils/normalizers';
+import { trimOrNull, trimLowerOrNull, normalizePhone, yearUtcOrNull } from '@shared/utils/normalizers';
 
 export class CompanyOrmMapper {
   static toOrm(domain: Company): Partial<CompanyOrmEntity> {

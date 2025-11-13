@@ -1,5 +1,5 @@
 import { Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
-import { SyncHubspotCompaniesUseCase } from '../../../core/application/companies/usecases/sync-hubspot-companies.usecase';
+import { SyncHubspotCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-companies.usecase';
 
 @Controller('etl/hubspot')
 export class EtlController {

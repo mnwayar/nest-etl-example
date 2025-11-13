@@ -1,12 +1,6 @@
-import { Company } from '../../../domain/companies/company.entity';
-import {
-  CompanyRepository,
-  CompanyRepositoryToken,
-} from '../../../domain/companies/company.repository';
-import {
-  HubspotCompanyProvider,
-  HubspotCompanyProviderToken,
-} from '../ports/hubspot-company.provider';
+import { Company } from '@core/domain/companies/company.entity';
+import { CompanyRepository, CompanyRepositoryToken } from '@core/domain/companies/company.repository';
+import { HubspotCompanyProvider, HubspotCompanyProviderToken } from '../ports/hubspot-company.provider';
 import { HubspotCompanyMapper } from '../mappers/hubspot-company.mapper';
 import { Inject, Injectable } from '@nestjs/common';
 

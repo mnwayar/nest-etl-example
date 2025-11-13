@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RestClientService } from '../../http/rest-client.service';
-import { HubspotCompanyProvider } from '../../../core/application/companies/ports/hubspot-company.provider';
-import { HubspotCompanyRaw } from '../../../core/application/companies/types/hubspot-company.type';
+import { HubspotCompanyProvider } from '@core/application/companies/ports/hubspot-company.provider';
+import { HubspotCompanyRaw } from '@core/application/companies/types/hubspot-company.type';
 
 @Injectable()
 export class HubspotCompanyService implements HubspotCompanyProvider {
