@@ -47,4 +47,14 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
       return CompanyOrmMapper.toDomain(company);
     });
   }
+
+  async getById(id: string): Promise<Company | null> {
+    const company = await this.repository.findOneBy({
+      sourceId: id
+    })
+    
+    if (!company) return null;
+
+    return CompanyOrmMapper.toDomain(company);
+  }
 }
