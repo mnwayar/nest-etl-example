@@ -1,6 +1,6 @@
 import { Company } from '../../../domain/companies/company.entity';
 import { HubspotCompanyRaw } from '../types/hubspot-company.type';
-import { trimOrNull, trimLowerOrNull, toDateOrNull } from '../../../../shared/utils/normalizers';
+import { trimOrNull, trimLowerOrNull, toDateOrNull, normalizePhone } from '../../../../shared/utils/normalizers';
 
 
 export class HubspotCompanyMapper {
@@ -10,7 +10,12 @@ export class HubspotCompanyMapper {
     const sourceId = props.hs_object_id ?? raw.id;
     const name = trimOrNull(props.name);
     const websiteDomain = trimLowerOrNull(props.domain);
+    const phone = normalizePhone(props.phone);
+    const city = trimLowerOrNull(props.city);
+    const country = trimLowerOrNull(props.country);
+    const industry = trimLowerOrNull(props.industry);
     const status: 'ACTIVE' | 'ARCHIVED' = raw.archived ? 'ARCHIVED' : 'ACTIVE';
+    const sourceUrl = trimOrNull(raw.url);
     const sourceCreatedAt = toDateOrNull(props.createdate);
     const sourceUpdatedAt =
       toDateOrNull(props.hs_lastmodifieddate) ??
@@ -20,7 +25,12 @@ export class HubspotCompanyMapper {
       sourceId,
       name,
       websiteDomain,
+      phone,
+      city,
+      country,
+      industry,
       status,
+      sourceUrl,
       sourceCreatedAt,
       sourceUpdatedAt,
       raw,

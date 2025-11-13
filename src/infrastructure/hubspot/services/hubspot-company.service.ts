@@ -20,6 +20,8 @@ export class HubspotCompanyService implements HubspotCompanyProvider {
     'createdate',
     'hs_lastmodifieddate',
     'hs_object_id',
+    'hs_logo_url',
+    'numberofemployees'
   ];
 
   constructor(

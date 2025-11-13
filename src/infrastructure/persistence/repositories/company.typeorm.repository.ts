@@ -38,9 +38,13 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
       .execute();
   }
 
-  async findAll() {
-    return this.repository.find({
-      order: { name: 'ASC' },
+  async getAll():Promise<Company[]> {
+    const companies = await this.repository.find({
+      order: { id: 'ASC' },
+    });
+
+    return companies.map((company) => {
+      return CompanyOrmMapper.toDomain(company);
     });
   }
 }

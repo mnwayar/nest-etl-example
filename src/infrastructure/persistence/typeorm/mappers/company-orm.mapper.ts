@@ -9,22 +9,38 @@ import {
 
 export class CompanyOrmMapper {
   static toOrm(domain: Company): Partial<CompanyOrmEntity> {
-    const rawProps = domain.raw?.properties ?? {};
-
+    
     return {
       sourceId: domain.sourceId,
       name: trimOrNull(domain.name as string | null),
       websiteDomain: trimLowerOrNull(domain.websiteDomain as string | null),
       status: domain.status,
-      phone: normalizePhone(rawProps.phone as string | null),
-      city: trimLowerOrNull(rawProps.city as string | null),
-      country: trimLowerOrNull(rawProps.country as string | null),
-      industry: trimLowerOrNull(rawProps.industry as string | null),
+      phone: normalizePhone(domain.phone as string | null),
+      city: trimLowerOrNull(domain.city as string | null),
+      country: trimLowerOrNull(domain.country as string | null),
+      industry: trimLowerOrNull(domain.industry as string | null),
       raw: domain.raw ?? null,
-      sourceUrl: trimOrNull(domain.raw?.url as string | null),
+      sourceUrl: trimOrNull(domain.sourceUrl as string | null),
       sourceCreatedAt: domain.sourceCreatedAt ?? null,
       sourceUpdatedAt: domain.sourceUpdatedAt ?? null,
       sourceCreatedYear: yearUtcOrNull(domain.sourceCreatedAt)
     };
+  }
+
+  static toDomain(entity: CompanyOrmEntity): Company {
+    return new Company(
+      entity.sourceId,
+      trimOrNull(entity.name),
+      trimLowerOrNull(entity.websiteDomain),
+      normalizePhone(entity.phone),
+      trimLowerOrNull(entity.city),
+      trimLowerOrNull(entity.country),
+      trimLowerOrNull(entity.industry),
+      entity.status,
+      trimOrNull(entity.sourceUrl),
+      entity.sourceCreatedAt,
+      entity.sourceUpdatedAt,
+      entity.raw ?? undefined,
+    );
   }
 }

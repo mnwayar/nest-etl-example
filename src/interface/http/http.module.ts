@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { EtlController } from './controllers/etl.controller';
+import { EtlController } from './etl/etl.controller';
 import { EtlModule } from '../../infrastructure/etl/etl.module';
-import { CompaniesController } from './controllers/companies.controller';
+import { CompaniesHttpModule } from './companies/companies.http.module';
 
 @Module({
   imports: [
     EtlModule,
+    CompaniesHttpModule
   ],
-  controllers: [EtlController, CompaniesController],
+  controllers: [EtlController],
 })
 export class HttpModule {}
