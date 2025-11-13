@@ -3,6 +3,8 @@ import { HttpModule } from '@nestjs/axios';
 import { RestClientService } from '../http/rest-client.service';
 import { HubspotCompanyService } from './services/hubspot-company.service';
 import { HubspotCompanyProviderToken } from '@core/application/companies/ports/hubspot-company.provider';
+import { HubspotContactService } from './services/hubspot-contact.service';
+import { HubspotContactProviderToken } from '@core/application/contacts/ports/hubspot-contact.provider';
 
 @Module({
   imports: [HttpModule],
@@ -13,7 +15,15 @@ import { HubspotCompanyProviderToken } from '@core/application/companies/ports/h
       provide: HubspotCompanyProviderToken,
       useExisting: HubspotCompanyService,
     },
+    HubspotContactService,
+    {
+      provide: HubspotContactProviderToken,
+      useExisting: HubspotContactService,
+    },
   ],
-  exports: [HubspotCompanyProviderToken],
+  exports: [
+    HubspotCompanyProviderToken,
+    HubspotContactProviderToken
+  ],
 })
 export class HubspotModule {}

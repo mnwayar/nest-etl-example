@@ -1,10 +1,14 @@
 export class Contact {
     constructor(
-        public readonly externalId: string,
+        public readonly sourceId: string,
+        public email: string | null,
         public firstname: string | null,
         public lastname: string | null,
-        public email: string | null,
+        public phone: string | null,
         public status: 'ACTIVE' | 'ARCHIVED',
+        public sourceUrl: string | null,
+        public sourceCreatedAt: Date | null,
+        public sourceUpdatedAt: Date | null,
         public raw?: Record<string, any>,
     ) {}
 
