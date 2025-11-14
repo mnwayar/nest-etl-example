@@ -26,11 +26,11 @@ export class ContactOrmMapper {
 
   static toDomain(entity: ContactOrmEntity): Contact {
     return new Contact(
-      entity.sourceId,
       trimLowerOrNull(entity.email),
       trimOrNull(entity.firstname),
       trimOrNull(entity.lastname),
       normalizePhone(entity.phone),
+      entity.sourceId,
       entity.status,
       trimOrNull(entity.sourceUrl),
       entity.sourceCreatedAt,

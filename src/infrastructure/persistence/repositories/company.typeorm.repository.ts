@@ -13,7 +13,7 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
     private readonly repository: Repository<CompanyOrmEntity>,
   ) {}
 
-  async sync(companies: Company[]): Promise<void> {
+  async syncFromSource(companies: Company[]): Promise<void> {
     if (!companies.length) {
       return;
     }

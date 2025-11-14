@@ -4,15 +4,14 @@ import {
   CompanyRepositoryToken,
 } from '@core/domain/companies/company.repository';
 import { Company } from '@core/domain/companies/company.entity';
+import { ListAllEntitiesUseCase } from '../../shared/usecases/list-all-entities.usecase';
 
 @Injectable()
-export class ListAllCompaniesUseCase {
+export class ListAllCompaniesUseCase extends ListAllEntitiesUseCase<Company> {
   constructor(
     @Inject(CompanyRepositoryToken)
-    private readonly companyRepository: CompanyRepository,
-  ) {}
-
-  async execute(): Promise<Company[]> {
-    return this.companyRepository.getAll();
+    companyRepository: CompanyRepository,
+  ) {
+    super(companyRepository);
   }
 }

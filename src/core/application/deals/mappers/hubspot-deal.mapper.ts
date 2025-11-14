@@ -1,21 +1,20 @@
-import { Contact } from '@core/domain/contacts/contact.entity';
-import { HubspotContactRaw } from '../types/hubspot-contact.type';
+import { Deal } from '@core/domain/deals/deal.entity';
+import { HubspotDealRaw } from '../types/hubspot-deal.type';
 import {
   trimOrNull,
   trimLowerOrNull,
   toDateOrNull,
-  normalizePhone,
 } from '@shared/utils/normalizers';
 
-export class HubspotContactMapper {
-  static toDomain(raw: HubspotContactRaw): Contact {
+export class HubspotDealMapper {
+  static toDomain(raw: HubspotDealRaw): Deal {
     const props = raw.properties ?? {};
 
     const id = props.hs_object_id ?? raw.id;
-    const firstname = trimOrNull(props.firstname);
-    const lastname = trimOrNull(props.lastname);
-    const email = trimLowerOrNull(props.email);
-    const phone = normalizePhone(props.phone);
+    const dealname = trimOrNull(props.dealname);
+    const dealstage = trimLowerOrNull(props.dealstage);
+    const closedate = toDateOrNull(props.closedate);
+    const amount = trimOrNull(props.amount);
     const status: 'ACTIVE' | 'ARCHIVED' = raw.archived ? 'ARCHIVED' : 'ACTIVE';
     const url = trimOrNull(raw.url);
     const createdAt = toDateOrNull(props.createdate);
@@ -23,11 +22,11 @@ export class HubspotContactMapper {
       toDateOrNull(props.hs_lastmodifieddate) ??
       toDateOrNull(raw.updatedAt ?? null);
 
-    return new Contact(
-      email,
-      firstname,
-      lastname,
-      phone,
+    return new Deal(
+      dealname,
+      dealstage,
+      closedate,
+      amount,
       id,
       status,
       url,

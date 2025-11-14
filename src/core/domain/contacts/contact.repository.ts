@@ -1,9 +1,6 @@
 import { Contact } from './contact.entity';
+import { CrmRepository } from '../shared/repositories/crm.repository';
 
 export const ContactRepositoryToken = Symbol('ContactRepository');
 
-export interface ContactRepository {
-  sync(contacts: Contact[]): Promise<void>;
-  getAll(): Promise<Contact[]>;
-  getById(id: string): Promise<Contact | null>;
-}
+export interface ContactRepository extends CrmRepository<Contact> {}

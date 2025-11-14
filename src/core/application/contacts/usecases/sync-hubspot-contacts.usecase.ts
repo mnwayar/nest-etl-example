@@ -1,3 +1,4 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { Contact } from '@core/domain/contacts/contact.entity';
 import {
   ContactRepository,
@@ -8,25 +9,29 @@ import {
   HubspotContactProviderToken,
 } from '../ports/hubspot-contact.provider';
 import { HubspotContactMapper } from '../mappers/hubspot-contact.mapper';
-import { Inject, Injectable } from '@nestjs/common';
+import { HubspotContactRaw } from '../types/hubspot-contact.type';
+import { SyncHubspotEntityUsecase } from '../../shared/usecases/sync-hubspot-entity.usecase';
 
 @Injectable()
-export class SyncHubspotContactsUseCase {
+export class SyncHubspotContactsUseCase extends SyncHubspotEntityUsecase<
+  Contact,
+  HubspotContactRaw
+> {
   constructor(
     @Inject(ContactRepositoryToken)
-    private readonly contactRepository: ContactRepository,
+    contactRepository: ContactRepository,
 
     @Inject(HubspotContactProviderToken)
     private readonly hubspotProvider: HubspotContactProvider,
-  ) {}
+  ) {
+    super(contactRepository);
+  }
 
-  async execute(limit?: number): Promise<void> {
-    const remoteContacts = await this.hubspotProvider.fetchContacts(limit);
+  protected fetchFromHubspot(limit?: number): Promise<HubspotContactRaw[]> {
+    return this.hubspotProvider.fetchContacts(limit);
+  }
 
-    const contacts: Contact[] = remoteContacts.map((contact) => {
-      return HubspotContactMapper.toDomain(contact);
-    });
-
-    await this.contactRepository.sync(contacts);
+  protected mapToDomain(raw: HubspotContactRaw): Contact {
+    return HubspotContactMapper.toDomain(raw);
   }
 }

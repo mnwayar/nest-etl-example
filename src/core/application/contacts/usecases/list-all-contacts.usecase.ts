@@ -4,15 +4,14 @@ import {
   ContactRepositoryToken,
 } from '@core/domain/contacts/contact.repository';
 import { Contact } from '@core/domain/contacts/contact.entity';
+import { ListAllEntitiesUseCase } from '../../shared/usecases/list-all-entities.usecase';
 
 @Injectable()
-export class ListAllContactsUseCase {
+export class ListAllContactsUseCase extends ListAllEntitiesUseCase<Contact> {
   constructor(
     @Inject(ContactRepositoryToken)
-    private readonly contactRepository: ContactRepository,
-  ) {}
-
-  async execute(): Promise<Contact[]> {
-    return this.contactRepository.getAll();
+    contactRepository: ContactRepository,
+  ) {
+    super(contactRepository);
   }
 }

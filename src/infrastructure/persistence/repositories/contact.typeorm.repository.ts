@@ -13,7 +13,7 @@ export class ContactTypeOrmRepository implements ContactRepository {
     private readonly repository: Repository<ContactOrmEntity>,
   ) {}
 
-  async sync(contacts: Contact[]): Promise<void> {
+  async syncFromSource(contacts: Contact[]): Promise<void> {
     if (!contacts.length) {
       return;
     }

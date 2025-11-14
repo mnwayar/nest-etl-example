@@ -28,13 +28,13 @@ export class CompanyOrmMapper {
 
   static toDomain(entity: CompanyOrmEntity): Company {
     return new Company(
-      entity.sourceId,
       trimOrNull(entity.name),
       trimLowerOrNull(entity.websiteDomain),
       normalizePhone(entity.phone),
       trimLowerOrNull(entity.city),
       trimLowerOrNull(entity.country),
       trimLowerOrNull(entity.industry),
+      entity.sourceId,
       entity.status,
       trimOrNull(entity.sourceUrl),
       entity.sourceCreatedAt,

@@ -11,32 +11,32 @@ export class HubspotCompanyMapper {
   static toDomain(raw: HubspotCompanyRaw): Company {
     const props = raw.properties ?? {};
 
-    const sourceId = props.hs_object_id ?? raw.id;
+    const id = props.hs_object_id ?? raw.id;
     const name = trimOrNull(props.name);
-    const websiteDomain = trimLowerOrNull(props.domain);
+    const domain = trimLowerOrNull(props.domain);
     const phone = normalizePhone(props.phone);
     const city = trimLowerOrNull(props.city);
     const country = trimLowerOrNull(props.country);
     const industry = trimLowerOrNull(props.industry);
     const status: 'ACTIVE' | 'ARCHIVED' = raw.archived ? 'ARCHIVED' : 'ACTIVE';
-    const sourceUrl = trimOrNull(raw.url);
-    const sourceCreatedAt = toDateOrNull(props.createdate);
-    const sourceUpdatedAt =
+    const url = trimOrNull(raw.url);
+    const createdAt = toDateOrNull(props.createdate);
+    const updatedAt =
       toDateOrNull(props.hs_lastmodifieddate) ??
       toDateOrNull(raw.updatedAt ?? null);
 
     return new Company(
-      sourceId,
       name,
-      websiteDomain,
+      domain,
       phone,
       city,
       country,
       industry,
+      id,
       status,
-      sourceUrl,
-      sourceCreatedAt,
-      sourceUpdatedAt,
+      url,
+      createdAt,
+      updatedAt,
       raw,
     );
   }

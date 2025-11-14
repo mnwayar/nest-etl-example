@@ -1,18 +1,13 @@
-export type HubspotCompanyRaw = {
-  id: string;
-  properties?: {
-    createdate?: string;
-    domain?: string;
-    hs_lastmodifieddate?: string;
-    hs_object_id?: string;
-    name?: string;
-    phone?: string;
-    city?: string;
-    country?: string;
-    industry?: string;
-  };
-  archived?: boolean;
-  url?: string;
-  createdAt?: string;
-  updatedAt?: string;
-};
+import { HubspotBaseProperties } from '../../shared/types/hubspot-base-properties.type';
+import { HubspotBaseRaw } from '../../shared/types/hubspot-base-raw.type';
+
+export interface HubspotCompanyProperties extends HubspotBaseProperties {
+  domain?: string;
+  name?: string;
+  phone?: string;
+  city?: string;
+  country?: string;
+  industry?: string;
+}
+
+export type HubspotCompanyRaw = HubspotBaseRaw<HubspotCompanyProperties>;

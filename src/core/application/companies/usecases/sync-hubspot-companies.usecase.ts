@@ -1,3 +1,4 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { Company } from '@core/domain/companies/company.entity';
 import {
   CompanyRepository,
@@ -8,25 +9,29 @@ import {
   HubspotCompanyProviderToken,
 } from '../ports/hubspot-company.provider';
 import { HubspotCompanyMapper } from '../mappers/hubspot-company.mapper';
-import { Inject, Injectable } from '@nestjs/common';
+import { HubspotCompanyRaw } from '../types/hubspot-company.type';
+import { SyncHubspotEntityUsecase } from '../../shared/usecases/sync-hubspot-entity.usecase';
 
 @Injectable()
-export class SyncHubspotCompaniesUseCase {
+export class SyncHubspotCompaniesUseCase extends SyncHubspotEntityUsecase<
+  Company,
+  HubspotCompanyRaw
+> {
   constructor(
     @Inject(CompanyRepositoryToken)
-    private readonly companyRepository: CompanyRepository,
+    companyRepository: CompanyRepository,
 
     @Inject(HubspotCompanyProviderToken)
     private readonly hubspotProvider: HubspotCompanyProvider,
-  ) {}
+  ) {
+    super(companyRepository);
+  }
 
-  async execute(limit?: number): Promise<void> {
-    const remoteCompanies = await this.hubspotProvider.fetchCompanies(limit);
+  protected fetchFromHubspot(limit?: number): Promise<HubspotCompanyRaw[]> {
+    return this.hubspotProvider.fetchCompanies(limit);
+  }
 
-    const companies: Company[] = remoteCompanies.map((company) => {
-      return HubspotCompanyMapper.toDomain(company);
-    });
-
-    await this.companyRepository.sync(companies);
+  protected mapToDomain(raw: HubspotCompanyRaw): Company {
+    return HubspotCompanyMapper.toDomain(raw);
   }
 }
