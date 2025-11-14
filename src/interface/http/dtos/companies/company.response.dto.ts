@@ -4,7 +4,7 @@ export class CompanyResponseDto {
   id!: string;
   name!: string | null;
   websiteDomain!: string | null;
-  status!: string | null;
+  status!: string;
   phone!: string | null;
   city!: string | null;
   country!: string | null;
@@ -19,7 +19,7 @@ export class CompanyResponseDto {
     dto.id = company.sourceId;
     dto.name = company.name;
     dto.websiteDomain = company.websiteDomain ?? null;
-    dto.status = company.status ?? null;
+    dto.status = company.status;
     dto.phone = company.phone ?? null;
     dto.city = company.city ?? null;
     dto.country = company.country ?? null;

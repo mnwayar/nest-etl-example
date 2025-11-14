@@ -1,6 +1,12 @@
 import { Contact } from '@core/domain/contacts/contact.entity';
-import { ContactRepository, ContactRepositoryToken } from '@core/domain/contacts/contact.repository';
-import { HubspotContactProvider, HubspotContactProviderToken } from '../ports/hubspot-contact.provider';
+import {
+  ContactRepository,
+  ContactRepositoryToken,
+} from '@core/domain/contacts/contact.repository';
+import {
+  HubspotContactProvider,
+  HubspotContactProviderToken,
+} from '../ports/hubspot-contact.provider';
 import { HubspotContactMapper } from '../mappers/hubspot-contact.mapper';
 import { Inject, Injectable } from '@nestjs/common';
 

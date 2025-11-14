@@ -28,17 +28,27 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
       .into(CompanyOrmEntity)
       .values(entities)
       .orUpdate(
-        [ 
-          'name', 'website_domain', 'status', 'phone', 'city', 'country', 'industry',
-          'source_url', 'source_created_at', 'source_updated_at', 'source_created_year',
-          'raw', 'updated_at'
+        [
+          'name',
+          'website_domain',
+          'status',
+          'phone',
+          'city',
+          'country',
+          'industry',
+          'source_url',
+          'source_created_at',
+          'source_updated_at',
+          'source_created_year',
+          'raw',
+          'updated_at',
         ],
         ['source_id'],
       )
       .execute();
   }
 
-  async getAll():Promise<Company[]> {
+  async getAll(): Promise<Company[]> {
     const companies = await this.repository.find({
       order: { id: 'ASC' },
     });
@@ -50,9 +60,9 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
 
   async getById(id: string): Promise<Company | null> {
     const company = await this.repository.findOneBy({
-      sourceId: id
-    })
-    
+      sourceId: id,
+    });
+
     if (!company) return null;
 
     return CompanyOrmMapper.toDomain(company);

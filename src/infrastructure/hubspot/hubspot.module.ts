@@ -21,9 +21,6 @@ import { HubspotContactProviderToken } from '@core/application/contacts/ports/hu
       useExisting: HubspotContactService,
     },
   ],
-  exports: [
-    HubspotCompanyProviderToken,
-    HubspotContactProviderToken
-  ],
+  exports: [HubspotCompanyProviderToken, HubspotContactProviderToken],
 })
 export class HubspotModule {}

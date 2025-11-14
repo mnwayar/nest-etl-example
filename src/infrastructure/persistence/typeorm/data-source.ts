@@ -9,14 +9,8 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || 'etl_user',
   password: process.env.DB_PASS || 'etl_pass',
   database: process.env.DB_NAME || 'etl_db',
-  entities: [
-    __dirname + '/entities/*.ts', 
-    __dirname + '/entities/*.js'
-  ],
-  migrations: [
-    __dirname + '/migrations/*.ts', 
-    __dirname + '/migrations/*.js'
-  ],
+  entities: [__dirname + '/entities/*.ts', __dirname + '/entities/*.js'],
+  migrations: [__dirname + '/migrations/*.ts', __dirname + '/migrations/*.js'],
   synchronize: false,
   logging: false,
   migrationsTableName: 'system_migrations',

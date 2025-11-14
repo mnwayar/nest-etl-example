@@ -34,7 +34,7 @@ export class ContactOrmEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   sourceUrl!: string | null;
-  
+
   @Column({ type: 'timestamptz', nullable: true })
   sourceCreatedAt!: Date | null;
 

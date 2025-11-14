@@ -1,4 +1,4 @@
-import { HubspotContactRaw } from '../types/hubspot-contact.type'
+import { HubspotContactRaw } from '../types/hubspot-contact.type';
 
 export const HubspotContactProviderToken = Symbol('HubspotContactProvider');
 export interface HubspotContactProvider {

@@ -6,7 +6,7 @@ export class ContactResponseDto {
   firstname!: string | null;
   lastname!: string | null;
   phone!: string | null;
-  status!: string | null;
+  status!: string;
   url!: string | null;
   createdAt!: Date | null;
   updatedAt!: Date | null;
@@ -19,7 +19,7 @@ export class ContactResponseDto {
     dto.firstname = contact.firstname ?? null;
     dto.lastname = contact.lastname ?? null;
     dto.phone = contact.phone ?? null;
-    dto.status = contact.status ?? null;
+    dto.status = contact.status;
     dto.phone = contact.phone ?? null;
     dto.url = contact.sourceUrl ?? null;
     dto.createdAt = contact.sourceCreatedAt ?? null;

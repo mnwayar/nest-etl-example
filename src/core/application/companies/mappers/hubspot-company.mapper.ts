@@ -1,7 +1,11 @@
 import { Company } from '@core/domain/companies/company.entity';
 import { HubspotCompanyRaw } from '../types/hubspot-company.type';
-import { trimOrNull, trimLowerOrNull, toDateOrNull, normalizePhone } from '@shared/utils/normalizers';
-
+import {
+  trimOrNull,
+  trimLowerOrNull,
+  toDateOrNull,
+  normalizePhone,
+} from '@shared/utils/normalizers';
 
 export class HubspotCompanyMapper {
   static toDomain(raw: HubspotCompanyRaw): Company {

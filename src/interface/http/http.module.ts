@@ -5,11 +5,7 @@ import { CompaniesHttpModule } from './companies/companies.http.module';
 import { ContactsHttpModule } from './contacts/contacts.http.module';
 
 @Module({
-  imports: [
-    EtlModule,
-    CompaniesHttpModule,
-    ContactsHttpModule
-  ],
+  imports: [EtlModule, CompaniesHttpModule, ContactsHttpModule],
   controllers: [EtlController],
 })
 export class HttpModule {}

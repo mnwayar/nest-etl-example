@@ -10,16 +10,13 @@ import { HttpModule } from '@interface/http/http.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [AppConfig],
-      envFilePath: [
-        `.env.${process.env.NODE_ENV ?? 'local'}`,
-        '.env',
-      ],
+      envFilePath: [`.env.${process.env.NODE_ENV ?? 'local'}`, '.env'],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: DatabaseConfig,
     }),
-    HttpModule
+    HttpModule,
   ],
   providers: [DatabaseConfig],
 })

@@ -1,7 +1,11 @@
 import { Contact } from '@core/domain/contacts/contact.entity';
 import { HubspotContactRaw } from '../types/hubspot-contact.type';
-import { trimOrNull, trimLowerOrNull, toDateOrNull, normalizePhone } from '@shared/utils/normalizers';
-
+import {
+  trimOrNull,
+  trimLowerOrNull,
+  toDateOrNull,
+  normalizePhone,
+} from '@shared/utils/normalizers';
 
 export class HubspotContactMapper {
   static toDomain(raw: HubspotContactRaw): Contact {
@@ -23,7 +27,7 @@ export class HubspotContactMapper {
       sourceId,
       email,
       firstname,
-      lastname,      
+      lastname,
       phone,
       status,
       sourceUrl,

@@ -10,10 +10,7 @@ import { EtlModule } from '@infra/etl/etl.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [AppConfig],
-      envFilePath: [
-        `.env.${process.env.NODE_ENV ?? 'local'}`,
-        '.env',
-      ],
+      envFilePath: [`.env.${process.env.NODE_ENV ?? 'local'}`, '.env'],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -23,4 +20,4 @@ import { EtlModule } from '@infra/etl/etl.module';
   ],
   providers: [DatabaseConfig],
 })
-export class EtlRunnerModule  {}
+export class EtlRunnerModule {}

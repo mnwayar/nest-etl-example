@@ -1,24 +1,28 @@
 import { Company } from '@core/domain/companies/company.entity';
 import { CompanyOrmEntity } from '../entities/company.orm-entity';
-import { trimOrNull, trimLowerOrNull, normalizePhone, yearUtcOrNull } from '@shared/utils/normalizers';
+import {
+  trimOrNull,
+  trimLowerOrNull,
+  normalizePhone,
+  yearUtcOrNull,
+} from '@shared/utils/normalizers';
 
 export class CompanyOrmMapper {
   static toOrm(domain: Company): Partial<CompanyOrmEntity> {
-    
     return {
       sourceId: domain.sourceId,
-      name: trimOrNull(domain.name as string | null),
-      websiteDomain: trimLowerOrNull(domain.websiteDomain as string | null),
+      name: trimOrNull(domain.name),
+      websiteDomain: trimLowerOrNull(domain.websiteDomain),
       status: domain.status,
-      phone: normalizePhone(domain.phone as string | null),
-      city: trimLowerOrNull(domain.city as string | null),
-      country: trimLowerOrNull(domain.country as string | null),
-      industry: trimLowerOrNull(domain.industry as string | null),
+      phone: normalizePhone(domain.phone),
+      city: trimLowerOrNull(domain.city),
+      country: trimLowerOrNull(domain.country),
+      industry: trimLowerOrNull(domain.industry),
       raw: domain.raw ?? null,
-      sourceUrl: trimOrNull(domain.sourceUrl as string | null),
+      sourceUrl: trimOrNull(domain.sourceUrl),
       sourceCreatedAt: domain.sourceCreatedAt ?? null,
       sourceUpdatedAt: domain.sourceUpdatedAt ?? null,
-      sourceCreatedYear: yearUtcOrNull(domain.sourceCreatedAt)
+      sourceCreatedYear: yearUtcOrNull(domain.sourceCreatedAt),
     };
   }
 

@@ -7,4 +7,3 @@ export interface CompanyRepository {
   getAll(): Promise<Company[]>;
   getById(id: string): Promise<Company | null>;
 }
-

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RestClientService } from '../../http/rest-client.service';
@@ -21,20 +23,25 @@ export class HubspotCompanyService implements HubspotCompanyProvider {
     'hs_lastmodifieddate',
     'hs_object_id',
     'hs_logo_url',
-    'numberofemployees'
+    'numberofemployees',
   ];
 
   constructor(
     private readonly configService: ConfigService,
     private readonly restClient: RestClientService,
   ) {
-    this.baseUrl = this.configService.get<string>('hubspot.baseUrl')!;
-    this.token = this.configService.get<string>('hubspot.token')!;
-    this.defaultLimit = this.configService.get<number>('hubspot.limit') ?? 10;
+    const baseUrl: string | undefined =
+      this.configService.get<string>('hubspot.baseUrl');
+    const token: string | undefined =
+      this.configService.get<string>('hubspot.token');
 
-    if (!this.baseUrl || !this.token) {
+    if (!baseUrl || !token) {
       throw new Error('HubSpot configuration is missing');
     }
+
+    this.baseUrl = baseUrl;
+    this.token = token;
+    this.defaultLimit = this.configService.get<number>('hubspot.limit') ?? 10;
   }
 
   async fetchCompanies(limit?: number): Promise<HubspotCompanyRaw[]> {
@@ -46,11 +53,11 @@ export class HubspotCompanyService implements HubspotCompanyProvider {
 
     do {
       const url = `${this.baseUrl}companies`;
-      const params: Record<string, any> = { 
+      const params: Record<string, any> = {
         limit: pageSize,
-        properties: this.companyProperties.join(',')
+        properties: this.companyProperties.join(','),
       };
-      
+
       if (after) params.after = after;
 
       const data = await this.restClient.get(url, params, this.token);

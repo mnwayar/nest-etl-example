@@ -13,9 +13,6 @@ import { CompanyRepositoryToken } from '@core/domain/companies/company.repositor
       useClass: CompanyTypeOrmRepository,
     },
   ],
-  exports: [
-    CompanyRepositoryToken,
-    CompanyTypeOrmRepository,
-  ],
+  exports: [CompanyRepositoryToken, CompanyTypeOrmRepository],
 })
 export class CompaniesPersistenceModule {}

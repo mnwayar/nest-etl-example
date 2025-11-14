@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RestClientService } from '../../http/rest-client.service';
@@ -18,20 +20,25 @@ export class HubspotContactService implements HubspotContactProvider {
     'createdate',
     'hs_lastmodifieddate',
     'hs_object_id',
-    'hs_lead_status'
+    'hs_lead_status',
   ];
 
   constructor(
     private readonly configService: ConfigService,
     private readonly restClient: RestClientService,
   ) {
-    this.baseUrl = this.configService.get<string>('hubspot.baseUrl')!;
-    this.token = this.configService.get<string>('hubspot.token')!;
-    this.defaultLimit = this.configService.get<number>('hubspot.limit') ?? 10;
+    const baseUrl: string | undefined =
+      this.configService.get<string>('hubspot.baseUrl');
+    const token: string | undefined =
+      this.configService.get<string>('hubspot.token');
 
-    if (!this.baseUrl || !this.token) {
+    if (!baseUrl || !token) {
       throw new Error('HubSpot configuration is missing');
     }
+
+    this.baseUrl = baseUrl;
+    this.token = token;
+    this.defaultLimit = this.configService.get<number>('hubspot.limit') ?? 10;
   }
 
   async fetchContacts(limit?: number): Promise<HubspotContactRaw[]> {
@@ -43,11 +50,11 @@ export class HubspotContactService implements HubspotContactProvider {
 
     do {
       const url = `${this.baseUrl}contacts`;
-      const params: Record<string, any> = { 
+      const params: Record<string, any> = {
         limit: pageSize,
-        properties: this.contactProperties.join(',')
+        properties: this.contactProperties.join(','),
       };
-      
+
       if (after) params.after = after;
 
       const data = await this.restClient.get(url, params, this.token);

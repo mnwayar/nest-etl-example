@@ -28,17 +28,25 @@ export class ContactTypeOrmRepository implements ContactRepository {
       .into(ContactOrmEntity)
       .values(entities)
       .orUpdate(
-        [ 
-          'email', 'firstname', 'lastname', 'phone', 'status',
-          'source_url', 'source_created_at', 'source_updated_at', 'source_created_year',
-          'raw', 'updated_at'
+        [
+          'email',
+          'firstname',
+          'lastname',
+          'phone',
+          'status',
+          'source_url',
+          'source_created_at',
+          'source_updated_at',
+          'source_created_year',
+          'raw',
+          'updated_at',
         ],
         ['source_id'],
       )
       .execute();
   }
 
-  async getAll():Promise<Contact[]> {
+  async getAll(): Promise<Contact[]> {
     const contacts = await this.repository.find({
       order: { id: 'ASC' },
     });
@@ -50,9 +58,9 @@ export class ContactTypeOrmRepository implements ContactRepository {
 
   async getById(id: string): Promise<Contact | null> {
     const contact = await this.repository.findOneBy({
-      sourceId: id
-    })
-    
+      sourceId: id,
+    });
+
     if (!contact) return null;
 
     return ContactOrmMapper.toDomain(contact);

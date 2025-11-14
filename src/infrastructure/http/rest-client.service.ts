@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -8,7 +12,7 @@ export class RestClientService {
   constructor(private readonly httpService: HttpService) {}
   private readonly logger = new Logger(RestClientService.name);
 
-  async get(url: any, params: any, accessToken: any) {
+  async get(url: string, params: unknown, accessToken: string) {
     return await firstValueFrom(
       this.httpService
         .get(url, {
@@ -33,7 +37,7 @@ export class RestClientService {
     );
   }
 
-  async post(url: any, params: any, accessToken: any) {
+  async post(url: string, params: any, accessToken: string) {
     return await firstValueFrom(
       this.httpService
         .post(url, params, {
@@ -58,7 +62,7 @@ export class RestClientService {
     );
   }
 
-  async put(url: any, params: any, accessToken: any) {
+  async put(url: string, params: any, accessToken: string) {
     return await firstValueFrom(
       this.httpService
         .put(url, params, {
@@ -83,7 +87,7 @@ export class RestClientService {
     );
   }
 
-  async delete(url: any, accessToken: any) {
+  async delete(url: string, accessToken: string) {
     const response = await firstValueFrom(
       this.httpService
         .delete(url, {

@@ -4,7 +4,7 @@ export class CompanyListResponseDto {
   id!: string;
   name!: string | null;
   websiteDomain!: string | null;
-  status!: string | null;
+  status!: string;
   url!: string | null;
   createdAt!: Date | null;
   updatedAt!: Date | null;
@@ -15,7 +15,7 @@ export class CompanyListResponseDto {
     dto.id = company.sourceId;
     dto.name = company.name;
     dto.websiteDomain = company.websiteDomain ?? null;
-    dto.status = company.status ?? null;
+    dto.status = company.status;
     dto.url = company.sourceUrl ?? null;
     dto.createdAt = company.sourceCreatedAt ?? null;
     dto.updatedAt = company.sourceUpdatedAt ?? null;

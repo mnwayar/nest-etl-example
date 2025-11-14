@@ -17,7 +17,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       migrationsRun,
       namingStrategy,
     } = AppDataSource.options;
-    
+
     return {
       type: 'postgres',
       host: this.config.get<string>('database.host'),
@@ -32,7 +32,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       logging,
       migrationsTableName,
       migrationsRun,
-      namingStrategy
+      namingStrategy,
     };
   }
 }

@@ -11,13 +11,7 @@ import { SyncHubspotContactsUseCase } from '@core/application/contacts/usecases/
     ContactsPersistenceModule,
     HubspotModule,
   ],
-  providers: [
-    SyncHubspotCompaniesUseCase,
-    SyncHubspotContactsUseCase
-  ],
-  exports: [
-    SyncHubspotCompaniesUseCase,
-    SyncHubspotContactsUseCase
-  ],
+  providers: [SyncHubspotCompaniesUseCase, SyncHubspotContactsUseCase],
+  exports: [SyncHubspotCompaniesUseCase, SyncHubspotContactsUseCase],
 })
 export class EtlModule {}

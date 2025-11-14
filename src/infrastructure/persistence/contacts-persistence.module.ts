@@ -13,9 +13,6 @@ import { ContactRepositoryToken } from '@core/domain/contacts/contact.repository
       useClass: ContactTypeOrmRepository,
     },
   ],
-  exports: [
-    ContactRepositoryToken,
-    ContactTypeOrmRepository,
-  ],
+  exports: [ContactRepositoryToken, ContactTypeOrmRepository],
 })
 export class ContactsPersistenceModule {}

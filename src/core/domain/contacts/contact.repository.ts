@@ -7,4 +7,3 @@ export interface ContactRepository {
   getAll(): Promise<Contact[]>;
   getById(id: string): Promise<Contact | null>;
 }
-
