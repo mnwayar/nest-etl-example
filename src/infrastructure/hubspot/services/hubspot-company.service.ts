@@ -52,7 +52,7 @@ export class HubspotCompanyService implements HubspotCompanyProvider {
     let hasNext: boolean;
 
     do {
-      const url = `${this.baseUrl}companies`;
+      const url = `${this.baseUrl}crm/objects/v3/companies`;
       const params: Record<string, any> = {
         limit: pageSize,
         properties: this.companyProperties.join(','),

@@ -22,6 +22,7 @@ export class HubspotContactMapper {
     const updatedAt =
       toDateOrNull(props.hs_lastmodifieddate) ??
       toDateOrNull(raw.updatedAt ?? null);
+    const archivedAt = toDateOrNull(raw.archivedAt ?? null);
 
     return new Contact(
       email,
@@ -33,6 +34,7 @@ export class HubspotContactMapper {
       url,
       createdAt,
       updatedAt,
+      archivedAt,
       raw,
     );
   }

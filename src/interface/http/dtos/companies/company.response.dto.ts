@@ -19,7 +19,7 @@ export class CompanyResponseDto {
     dto.id = company.sourceId;
     dto.name = company.name;
     dto.websiteDomain = company.websiteDomain ?? null;
-    dto.status = company.status;
+    dto.status = company.sourceStatus;
     dto.phone = company.phone ?? null;
     dto.city = company.city ?? null;
     dto.country = company.country ?? null;

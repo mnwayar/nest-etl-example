@@ -1,17 +1,17 @@
 import { Column, Entity } from 'typeorm';
 import { CrmOrmEntity } from './shared/crm.orm-entity';
 
-@Entity({ name: 'contacts' })
-export class ContactOrmEntity extends CrmOrmEntity {
+@Entity({ name: 'deals' })
+export class DealOrmEntity extends CrmOrmEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
-  firstname!: string | null;
+  name!: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  lastname!: string | null;
+  stage!: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  email!: string | null;
+  amount!: string | null;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  phone!: string | null;
+  @Column({ type: 'timestamptz', nullable: true })
+  closeDate!: Date | null;
 }

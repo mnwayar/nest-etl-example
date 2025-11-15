@@ -24,6 +24,7 @@ export class HubspotCompanyMapper {
     const updatedAt =
       toDateOrNull(props.hs_lastmodifieddate) ??
       toDateOrNull(raw.updatedAt ?? null);
+    const archivedAt = toDateOrNull(raw.archivedAt ?? null);
 
     return new Company(
       name,
@@ -37,6 +38,7 @@ export class HubspotCompanyMapper {
       url,
       createdAt,
       updatedAt,
+      archivedAt,
       raw,
     );
   }

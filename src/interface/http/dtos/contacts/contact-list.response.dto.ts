@@ -18,7 +18,7 @@ export class ContactListResponseDto {
     dto.email = contact.email;
     dto.firstname = contact.firstname;
     dto.lastname = contact.lastname;
-    dto.status = contact.status;
+    dto.status = contact.sourceStatus;
     dto.url = contact.sourceUrl ?? null;
     dto.createdAt = contact.sourceCreatedAt ?? null;
     dto.updatedAt = contact.sourceUpdatedAt ?? null;

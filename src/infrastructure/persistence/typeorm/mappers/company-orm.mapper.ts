@@ -13,7 +13,7 @@ export class CompanyOrmMapper {
       sourceId: domain.sourceId,
       name: trimOrNull(domain.name),
       websiteDomain: trimLowerOrNull(domain.websiteDomain),
-      status: domain.status,
+      sourceStatus: domain.sourceStatus,
       phone: normalizePhone(domain.phone),
       city: trimLowerOrNull(domain.city),
       country: trimLowerOrNull(domain.country),
@@ -22,6 +22,7 @@ export class CompanyOrmMapper {
       sourceUrl: trimOrNull(domain.sourceUrl),
       sourceCreatedAt: domain.sourceCreatedAt ?? null,
       sourceUpdatedAt: domain.sourceUpdatedAt ?? null,
+      sourceDeletedAt: domain.sourceDeletedAt ?? null,
       sourceCreatedYear: yearUtcOrNull(domain.sourceCreatedAt),
     };
   }
@@ -35,10 +36,11 @@ export class CompanyOrmMapper {
       trimLowerOrNull(entity.country),
       trimLowerOrNull(entity.industry),
       entity.sourceId,
-      entity.status,
+      entity.sourceStatus,
       trimOrNull(entity.sourceUrl),
       entity.sourceCreatedAt,
       entity.sourceUpdatedAt,
+      entity.sourceDeletedAt,
       entity.raw ?? undefined,
     );
   }

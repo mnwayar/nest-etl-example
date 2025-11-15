@@ -15,11 +15,12 @@ export class ContactOrmMapper {
       lastname: trimOrNull(domain.lastname),
       email: trimOrNull(domain.email),
       phone: normalizePhone(domain.phone),
-      status: domain.status,
+      sourceStatus: domain.sourceStatus,
       raw: domain.raw ?? null,
       sourceUrl: trimOrNull(domain.sourceUrl),
       sourceCreatedAt: domain.sourceCreatedAt ?? null,
       sourceUpdatedAt: domain.sourceUpdatedAt ?? null,
+      sourceDeletedAt: domain.sourceDeletedAt ?? null,
       sourceCreatedYear: yearUtcOrNull(domain.sourceCreatedAt),
     };
   }
@@ -31,10 +32,11 @@ export class ContactOrmMapper {
       trimOrNull(entity.lastname),
       normalizePhone(entity.phone),
       entity.sourceId,
-      entity.status,
+      entity.sourceStatus,
       trimOrNull(entity.sourceUrl),
       entity.sourceCreatedAt,
       entity.sourceUpdatedAt,
+      entity.sourceDeletedAt,
       entity.raw ?? undefined,
     );
   }

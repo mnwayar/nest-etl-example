@@ -49,7 +49,7 @@ export class HubspotContactService implements HubspotContactProvider {
     let hasNext: boolean;
 
     do {
-      const url = `${this.baseUrl}contacts`;
+      const url = `${this.baseUrl}crm/objects/v3/contacts`;
       const params: Record<string, any> = {
         limit: pageSize,
         properties: this.contactProperties.join(','),

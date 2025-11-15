@@ -15,7 +15,7 @@ export class CompanyListResponseDto {
     dto.id = company.sourceId;
     dto.name = company.name;
     dto.websiteDomain = company.websiteDomain ?? null;
-    dto.status = company.status;
+    dto.status = company.sourceStatus;
     dto.url = company.sourceUrl ?? null;
     dto.createdAt = company.sourceCreatedAt ?? null;
     dto.updatedAt = company.sourceUpdatedAt ?? null;

@@ -8,5 +8,6 @@ export interface HubspotBaseRaw<
   properties: TProps | null;
   createdAt?: string | null;
   updatedAt?: string | null;
+  archivedAt?: string | null;
   url?: string | null;
 }

@@ -1,19 +1,8 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { CrmOrmEntity } from './shared/crm.orm-entity';
 
 @Entity({ name: 'companies' })
-export class CompanyOrmEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column({ unique: true })
-  sourceId!: string;
-
+export class CompanyOrmEntity extends CrmOrmEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   name!: string | null;
 
@@ -31,28 +20,4 @@ export class CompanyOrmEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   industry!: string | null;
-
-  @Column({ type: 'enum', enum: ['ACTIVE', 'ARCHIVED'], default: 'ACTIVE' })
-  status!: 'ACTIVE' | 'ARCHIVED';
-
-  @Column({ type: 'jsonb', nullable: true })
-  raw!: Record<string, any> | null;
-
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  sourceUrl!: string | null;
-
-  @Column({ type: 'timestamptz', nullable: true })
-  sourceCreatedAt!: Date | null;
-
-  @Column({ type: 'timestamptz', nullable: true })
-  sourceUpdatedAt!: Date | null;
-
-  @Column({ type: 'int', nullable: true })
-  sourceCreatedYear!: number | null;
-
-  @CreateDateColumn()
-  createdAt!: Date;
-
-  @UpdateDateColumn()
-  updatedAt!: Date;
 }

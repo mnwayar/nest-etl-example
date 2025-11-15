@@ -21,6 +21,7 @@ export class HubspotDealMapper {
     const updatedAt =
       toDateOrNull(props.hs_lastmodifieddate) ??
       toDateOrNull(raw.updatedAt ?? null);
+    const archivedAt = toDateOrNull(raw.archivedAt ?? null);
 
     return new Deal(
       dealname,
@@ -32,6 +33,7 @@ export class HubspotDealMapper {
       url,
       createdAt,
       updatedAt,
+      archivedAt,
       raw,
     );
   }

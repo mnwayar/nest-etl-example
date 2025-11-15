@@ -8,12 +8,21 @@ export class Deal extends CrmEntity {
     public amount: string | null,
 
     sourceId: string,
-    status: CrmEntityStatus,
+    sourceStatus: CrmEntityStatus,
     sourceUrl: string | null,
     sourceCreatedAt: Date | null,
     sourceUpdatedAt: Date | null,
+    sourceDeletedAt: Date | null,
     raw?: Record<string, any>,
   ) {
-    super(sourceId, status, sourceUrl, sourceCreatedAt, sourceUpdatedAt, raw);
+    super(
+      sourceId,
+      sourceStatus,
+      sourceUrl,
+      sourceCreatedAt,
+      sourceUpdatedAt,
+      sourceDeletedAt,
+      raw,
+    );
   }
 }

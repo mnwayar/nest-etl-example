@@ -3,18 +3,19 @@ export type CrmEntityStatus = 'ACTIVE' | 'ARCHIVED';
 export abstract class CrmEntity {
   constructor(
     public readonly sourceId: string,
-    public status: CrmEntityStatus,
+    public sourceStatus: CrmEntityStatus,
     public sourceUrl: string | null,
     public sourceCreatedAt: Date | null,
     public sourceUpdatedAt: Date | null,
+    public sourceDeletedAt: Date | null,
     public raw?: Record<string, any>,
   ) {}
 
   isActive(): boolean {
-    return this.status === 'ACTIVE';
+    return this.sourceStatus === 'ACTIVE';
   }
 
   isArchived(): boolean {
-    return this.status === 'ARCHIVED';
+    return this.sourceStatus === 'ARCHIVED';
   }
 }
