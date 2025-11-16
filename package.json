@@ -2,7 +2,6 @@
   "name": "nest-etl-example",
   "version": "1.0.0",
   "description": "ETL test project with NestJS + TypeORM + Postgres",
-  "type": "module",
   "main": "dist/main.js",
   "scripts": {
     "start": "npm run start:api",
@@ -16,7 +15,10 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/infrastructure/persistence/typeorm/data-source.ts",
     "migration:generate": "npm run typeorm -- migration:generate src/infrastructure/persistence/typeorm/migrations/auto-migration",
     "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "etl": "node dist/apps/etl-runner/src/main.js",
+    "etl:companies": "node dist/apps/etl-runner/src/main.js companies",
+    "etl:companies:deleted": "node dist/apps/etl-runner/src/main.js companies:deleted"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",

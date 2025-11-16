@@ -14,6 +14,6 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: false,
   migrationsTableName: 'system_migrations',
-  migrationsRun: true,
+  migrationsRun: false,
   namingStrategy: new SnakeNamingStrategy(),
 });

@@ -13,7 +13,7 @@ import { HubspotCompanyRaw } from '../types/hubspot-company.type';
 import { SyncHubspotEntityUsecase } from '../../shared/usecases/sync-hubspot-entity.usecase';
 
 @Injectable()
-export class SyncHubspotCompaniesUseCase extends SyncHubspotEntityUsecase<
+export class SyncHubspotCompaniesArchivedUseCase extends SyncHubspotEntityUsecase<
   Company,
   HubspotCompanyRaw
 > {
@@ -28,7 +28,7 @@ export class SyncHubspotCompaniesUseCase extends SyncHubspotEntityUsecase<
   }
 
   protected fetchFromHubspot(limit?: number): Promise<HubspotCompanyRaw[]> {
-    return this.hubspotProvider.fetchCompanies(limit);
+    return this.hubspotProvider.fetchArchivedCompanies(limit);
   }
 
   protected mapToDomain(raw: HubspotCompanyRaw): Company {

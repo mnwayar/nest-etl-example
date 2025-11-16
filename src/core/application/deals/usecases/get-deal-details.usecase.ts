@@ -4,10 +4,10 @@ import {
   DealRepositoryToken,
 } from '@core/domain/deals/deal.repository';
 import { Deal } from '@core/domain/deals/deal.entity';
-import { GetEntityDetailsUsecase } from '../../shared/usecases/get-entity-details.usecase';
+import { GetEntityDetailsUseCase } from '../../shared/usecases/get-entity-details.usecase';
 
 @Injectable()
-export class GetDealDetailsUseCase extends GetEntityDetailsUsecase<Deal> {
+export class GetDealDetailsUseCase extends GetEntityDetailsUseCase<Deal> {
   constructor(
     @Inject(DealRepositoryToken)
     dealRepository: DealRepository,

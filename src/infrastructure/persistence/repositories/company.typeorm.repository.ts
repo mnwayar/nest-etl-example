@@ -31,7 +31,7 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
         [
           'name',
           'website_domain',
-          'status',
+          'source_status',
           'phone',
           'city',
           'country',
@@ -39,6 +39,7 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
           'source_url',
           'source_created_at',
           'source_updated_at',
+          'source_deleted_at',
           'source_created_year',
           'raw',
           'updated_at',
