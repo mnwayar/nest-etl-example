@@ -6,6 +6,7 @@ import { SyncHubspotArchivedContactsUseCase } from '@core/application/contacts/u
 import { SyncHubspotUpdatedContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-updated-contacts.usecase';
 import { SyncHubspotArchivedDealsUseCase } from '@core/application/deals/usecases/sync-hubspot-archived-deals.usecase';
 import { SyncHubspotUpdatedDealsUseCase } from '@core/application/deals/usecases/sync-hubspot-updated-deals.usecase';
+import { SyncHubspotContactAssociationsUseCase } from '../../../src/core/application/associations/usecases/sync-hubspot-contact-associations.usecase';
 import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
@@ -42,7 +43,7 @@ async function bootstrap() {
         await usecase.execute();
         break;
       }
-      // -----------------   DEALS -  -----------------
+      // -----------------   DEALS   ------------------
       case 'deals': {
         logger.log('Running ETL: deals (updated)');
         const usecase = app.get(SyncHubspotUpdatedDealsUseCase);
@@ -55,9 +56,16 @@ async function bootstrap() {
         await usecase.execute();
         break;
       }
+      // ---------------- ASSOCIATIONS -----------------
+      case 'associations:contacts': {
+        logger.log('Running ETL: associations (contacts)');
+        const usecase = app.get(SyncHubspotContactAssociationsUseCase);
+        await usecase.execute();
+        break;
+      }
       default: {
         logger.log(
-          'Running ETL: ALL (companies/contacts/deals updated + deleted)',
+          'Running ETL: ALL (companies/contacts/deals updated + deleted, associations)',
         );
         const updatedCompanies = app.get(SyncHubspotUpdatedCompaniesUseCase);
         const archivedCompanies = app.get(SyncHubspotArchivedCompaniesUseCase);
@@ -68,12 +76,17 @@ async function bootstrap() {
         const updatedDeals = app.get(SyncHubspotUpdatedDealsUseCase);
         const archivedDeals = app.get(SyncHubspotArchivedDealsUseCase);
 
+        const contactAssociations = app.get(
+          SyncHubspotContactAssociationsUseCase,
+        );
+
         await updatedCompanies.execute();
         await archivedCompanies.execute();
         await updatedContacts.execute();
         await archivedContacts.execute();
         await updatedDeals.execute();
         await archivedDeals.execute();
+        await contactAssociations.execute();
 
         break;
       }

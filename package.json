@@ -18,7 +18,12 @@
     "migration:revert": "npm run typeorm -- migration:revert",
     "etl": "node dist/apps/etl-runner/src/main.js",
     "etl:companies": "node dist/apps/etl-runner/src/main.js companies",
-    "etl:companies:deleted": "node dist/apps/etl-runner/src/main.js companies:deleted"
+    "etl:companies:deleted": "node dist/apps/etl-runner/src/main.js companies:deleted",
+    "etl:contacts": "node dist/apps/etl-runner/src/main.js contacts",
+    "etl:contacts:deleted": "node dist/apps/etl-runner/src/main.js contacts:deleted",
+    "etl:deals": "node dist/apps/etl-runner/src/main.js deals",
+    "etl:deals:deleted": "node dist/apps/etl-runner/src/main.js deals:deleted",
+    "etl:associations:contacts": "node dist/apps/etl-runner/src/main.js associations:contacts"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",

@@ -33,7 +33,7 @@ export class DealTypeOrmRepository implements DealRepository {
           'stage',
           'amount',
           'close_date',
-          'status',
+          'source_status',
           'source_url',
           'source_created_at',
           'source_updated_at',

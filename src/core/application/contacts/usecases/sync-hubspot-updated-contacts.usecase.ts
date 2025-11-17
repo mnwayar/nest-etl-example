@@ -49,7 +49,7 @@ export class SyncHubspotUpdatedContactsUseCase extends SyncHubspotEntityUseCase<
 
     this.filters = [
       {
-        propertyName: 'hs_lastmodifieddate',
+        propertyName: 'lastmodifieddate',
         operator: 'GT',
         value: lastRunAt,
       },

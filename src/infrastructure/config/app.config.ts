@@ -16,5 +16,6 @@ export const AppConfig = () => ({
       process.env.HUBSPOT_BASE_URL ?? 'https://api.hubapi.com/crm/objects/v3/',
     token: process.env.HUBSPOT_TOKEN ?? '',
     limit: parseInt(process.env.HUBSPOT_LIMIT ?? '10', 10),
+    batchSize: parseInt(process.env.HUBSPOT_BATCH_SIZE ?? '1000', 10),
   },
 });

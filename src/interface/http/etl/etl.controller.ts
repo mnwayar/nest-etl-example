@@ -5,6 +5,7 @@ import { SyncHubspotUpdatedContactsUseCase } from '@core/application/contacts/us
 import { SyncHubspotArchivedContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-archived-contacts.usecase';
 import { SyncHubspotUpdatedDealsUseCase } from '../../../core/application/deals/usecases/sync-hubspot-updated-deals.usecase';
 import { SyncHubspotArchivedDealsUseCase } from '../../../core/application/deals/usecases/sync-hubspot-archived-deals.usecase';
+import { SyncHubspotContactAssociationsUseCase } from '../../../core/application/associations/usecases/sync-hubspot-contact-associations.usecase';
 
 @Controller('etl/hubspot')
 export class EtlController {
@@ -15,6 +16,7 @@ export class EtlController {
     private readonly syncArchivedContacts: SyncHubspotArchivedContactsUseCase,
     private readonly syncUpdatedDeals: SyncHubspotUpdatedDealsUseCase,
     private readonly syncArchivedDeals: SyncHubspotArchivedDealsUseCase,
+    private readonly syncContactAssociations: SyncHubspotContactAssociationsUseCase,
   ) {}
 
   @Post('companies')
@@ -56,6 +58,13 @@ export class EtlController {
   @HttpCode(HttpStatus.OK)
   async syncArchivedDealsHandler() {
     await this.syncArchivedDeals.execute();
+    return { ok: true };
+  }
+
+  @Post('associations')
+  @HttpCode(HttpStatus.OK)
+  async syncAssociationsHandler() {
+    await this.syncContactAssociations.execute();
     return { ok: true };
   }
 }

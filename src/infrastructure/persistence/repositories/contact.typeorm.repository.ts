@@ -66,4 +66,18 @@ export class ContactTypeOrmRepository implements ContactRepository {
 
     return ContactOrmMapper.toDomain(contact);
   }
+
+  async listSourceIdsUpdatedSince(since: Date | null): Promise<string[]> {
+    const query = this.repository
+      .createQueryBuilder('c')
+      .select('c.sourceId', 'sourceId');
+
+    if (since) {
+      query.where('c.sourceUpdatedAt > :since', { since });
+    }
+
+    const rows = await query.getRawMany<{ sourceId: string }>();
+
+    return rows.map((r) => r.sourceId);
+  }
 }

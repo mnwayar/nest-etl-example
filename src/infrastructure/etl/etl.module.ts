@@ -10,6 +10,8 @@ import { SyncHubspotUpdatedDealsUseCase } from '../../core/application/deals/use
 import { SyncHubspotArchivedCompaniesUseCase } from '../../core/application/companies/usecases/sync-hubspot-archived-companies.usecase';
 import { SyncHubspotArchivedContactsUseCase } from '../../core/application/contacts/usecases/sync-hubspot-archived-contacts.usecase';
 import { SyncHubspotArchivedDealsUseCase } from '../../core/application/deals/usecases/sync-hubspot-archived-deals.usecase';
+import { ContactAssociationsPersistenceModule } from '../persistence/contact-association-persistence.module';
+import { SyncHubspotContactAssociationsUseCase } from '../../core/application/associations/usecases/sync-hubspot-contact-associations.usecase';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { SyncHubspotArchivedDealsUseCase } from '../../core/application/deals/us
     CompaniesPersistenceModule,
     ContactsPersistenceModule,
     DealsPersistenceModule,
+    ContactAssociationsPersistenceModule,
     HubspotModule,
   ],
   providers: [
@@ -26,6 +29,7 @@ import { SyncHubspotArchivedDealsUseCase } from '../../core/application/deals/us
     SyncHubspotArchivedCompaniesUseCase,
     SyncHubspotArchivedContactsUseCase,
     SyncHubspotArchivedDealsUseCase,
+    SyncHubspotContactAssociationsUseCase,
   ],
   exports: [
     SyncHubspotUpdatedCompaniesUseCase,
@@ -34,6 +38,7 @@ import { SyncHubspotArchivedDealsUseCase } from '../../core/application/deals/us
     SyncHubspotArchivedCompaniesUseCase,
     SyncHubspotArchivedContactsUseCase,
     SyncHubspotArchivedDealsUseCase,
+    SyncHubspotContactAssociationsUseCase,
   ],
 })
 export class EtlModule {}
