@@ -38,19 +38,6 @@ export class RestClientService {
   }
 
   async post(url: string, params: any, accessToken: string) {
-    this.logger.debug(`POST Request to ${url}`);
-    this.logger.debug(`Body: ${JSON.stringify(params, null, 2)}`);
-    this.logger.debug(
-      `Headers: ${JSON.stringify(
-        {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        null,
-        2,
-      )}`,
-    );
-
     return await firstValueFrom(
       this.httpService
         .post(url, params, {
