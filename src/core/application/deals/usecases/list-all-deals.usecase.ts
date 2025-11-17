@@ -7,7 +7,7 @@ import { Deal } from '@core/domain/deals/deal.entity';
 import { ListAllEntitiesUseCase } from '../../shared/usecases/list-all-entities.usecase';
 
 @Injectable()
-export class ListAllDealsUsecase extends ListAllEntitiesUseCase<Deal> {
+export class ListAllDealsUseCase extends ListAllEntitiesUseCase<Deal> {
   constructor(
     @Inject(DealRepositoryToken)
     dealRepository: DealRepository,

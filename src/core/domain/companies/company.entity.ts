@@ -14,7 +14,7 @@ export class Company extends CrmEntity {
     sourceUrl: string | null,
     sourceCreatedAt: Date | null,
     sourceUpdatedAt: Date | null,
-    sourceDeletedAt: Date | null,
+    sourceArchivedAt: Date | null,
     raw?: Record<string, any>,
   ) {
     super(
@@ -23,7 +23,7 @@ export class Company extends CrmEntity {
       sourceUrl,
       sourceCreatedAt,
       sourceUpdatedAt,
-      sourceDeletedAt,
+      sourceArchivedAt,
       raw,
     );
   }

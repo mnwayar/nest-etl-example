@@ -15,4 +15,4 @@ import { DealRepositoryToken } from '@core/domain/deals/deal.repository';
   ],
   exports: [DealRepositoryToken, DealTypeOrmRepository],
 })
-export class DealPersistenceModule {}
+export class DealsPersistenceModule {}

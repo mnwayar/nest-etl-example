@@ -13,7 +13,7 @@ export class DealOrmMapper {
       sourceUrl: trimOrNull(domain.sourceUrl),
       sourceCreatedAt: domain.sourceCreatedAt ?? null,
       sourceUpdatedAt: domain.sourceUpdatedAt ?? null,
-      sourceDeletedAt: domain.sourceDeletedAt ?? null,
+      sourceArchivedAt: domain.sourceArchivedAt ?? null,
       sourceCreatedYear: yearUtcOrNull(domain.sourceCreatedAt),
       raw: domain.raw ?? null,
       name: trimOrNull(domain.name),
@@ -34,7 +34,7 @@ export class DealOrmMapper {
       trimOrNull(entity.sourceUrl),
       entity.sourceCreatedAt,
       entity.sourceUpdatedAt,
-      entity.sourceDeletedAt,
+      entity.sourceArchivedAt,
       entity.raw ?? undefined,
     );
   }

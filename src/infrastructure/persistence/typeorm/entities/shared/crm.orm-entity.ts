@@ -25,7 +25,7 @@ export abstract class CrmOrmEntity {
   sourceUpdatedAt!: Date | null;
 
   @Column({ type: 'timestamptz', nullable: true })
-  sourceDeletedAt!: Date | null;
+  sourceArchivedAt!: Date | null;
 
   @Column({ type: 'int', nullable: true })
   sourceCreatedYear!: number | null;

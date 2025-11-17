@@ -1,14 +1,20 @@
 import { Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
-import { SyncHubspotCompaniesUpdatedUseCase } from '@core/application/companies/usecases/sync-hubspot-companies-updated.usecase';
-import { SyncHubspotCompaniesArchivedUseCase } from '@core/application/companies/usecases/sync-hubspot-companies-archived.usecase';
-import { SyncHubspotContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-contacts.usecase';
+import { SyncHubspotUpdatedCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-updated-companies.usecase';
+import { SyncHubspotArchivedCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-archived-companies.usecase';
+import { SyncHubspotUpdatedContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-updated-contacts.usecase';
+import { SyncHubspotArchivedContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-archived-contacts.usecase';
+import { SyncHubspotUpdatedDealsUseCase } from '../../../core/application/deals/usecases/sync-hubspot-updated-deals.usecase';
+import { SyncHubspotArchivedDealsUseCase } from '../../../core/application/deals/usecases/sync-hubspot-archived-deals.usecase';
 
 @Controller('etl/hubspot')
 export class EtlController {
   constructor(
-    private readonly syncArchivedCompanies: SyncHubspotCompaniesArchivedUseCase,
-    private readonly syncUpdatedCompanies: SyncHubspotCompaniesUpdatedUseCase,
-    private readonly syncContacts: SyncHubspotContactsUseCase,
+    private readonly syncUpdatedCompanies: SyncHubspotUpdatedCompaniesUseCase,
+    private readonly syncArchivedCompanies: SyncHubspotArchivedCompaniesUseCase,
+    private readonly syncUpdatedContacts: SyncHubspotUpdatedContactsUseCase,
+    private readonly syncArchivedContacts: SyncHubspotArchivedContactsUseCase,
+    private readonly syncUpdatedDeals: SyncHubspotUpdatedDealsUseCase,
+    private readonly syncArchivedDeals: SyncHubspotArchivedDealsUseCase,
   ) {}
 
   @Post('companies')
@@ -28,7 +34,28 @@ export class EtlController {
   @Post('contacts')
   @HttpCode(HttpStatus.OK)
   async syncContactsHandler() {
-    await this.syncContacts.execute();
+    await this.syncUpdatedContacts.execute();
+    return { ok: true };
+  }
+
+  @Post('contacts/archived')
+  @HttpCode(HttpStatus.OK)
+  async syncArchivedContactsHandler() {
+    await this.syncArchivedContacts.execute();
+    return { ok: true };
+  }
+
+  @Post('deals')
+  @HttpCode(HttpStatus.OK)
+  async syncDealsHandler() {
+    await this.syncUpdatedDeals.execute();
+    return { ok: true };
+  }
+
+  @Post('deals/archived')
+  @HttpCode(HttpStatus.OK)
+  async syncArchivedDealsHandler() {
+    await this.syncArchivedDeals.execute();
     return { ok: true };
   }
 }

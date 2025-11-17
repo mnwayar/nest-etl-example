@@ -1,6 +1,6 @@
 import { CrmRepository } from '../../../domain/shared/repositories/crm.repository';
 
-export abstract class SyncHubspotEntityUsecase<TDomain, TRaw> {
+export abstract class SyncHubspotEntityUseCase<TDomain, TRaw> {
   constructor(protected readonly crmRepository: CrmRepository<TDomain>) {}
 
   protected abstract fetchFromHubspot(limit?: number): Promise<TRaw[]>;

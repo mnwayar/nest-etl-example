@@ -10,10 +10,10 @@ import {
 } from '../ports/hubspot-contact.provider';
 import { HubspotContactMapper } from '../mappers/hubspot-contact.mapper';
 import { HubspotContactRaw } from '../types/hubspot-contact.type';
-import { SyncHubspotEntityUsecase } from '../../shared/usecases/sync-hubspot-entity.usecase';
+import { SyncHubspotEntityUseCase } from '../../shared/usecases/sync-hubspot-entity.usecase';
 
 @Injectable()
-export class SyncHubspotContactsUseCase extends SyncHubspotEntityUsecase<
+export class SyncHubspotArchivedContactsUseCase extends SyncHubspotEntityUseCase<
   Contact,
   HubspotContactRaw
 > {
@@ -28,7 +28,7 @@ export class SyncHubspotContactsUseCase extends SyncHubspotEntityUsecase<
   }
 
   protected fetchFromHubspot(limit?: number): Promise<HubspotContactRaw[]> {
-    return this.hubspotProvider.fetchContacts(limit);
+    return this.hubspotProvider.fetchArchivedContacts(limit);
   }
 
   protected mapToDomain(raw: HubspotContactRaw): Contact {

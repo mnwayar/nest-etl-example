@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { EtlRunnerModule } from './etl-runner.module';
-import { SyncHubspotCompaniesArchivedUseCase } from '@core/application/companies/usecases/sync-hubspot-companies-archived.usecase';
-import { SyncHubspotCompaniesUpdatedUseCase } from '@core/application/companies/usecases/sync-hubspot-companies-updated.usecase';
-import { SyncHubspotContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-contacts.usecase';
+import { SyncHubspotArchivedCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-archived-companies.usecase';
+import { SyncHubspotUpdatedCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-updated-companies.usecase';
+import { SyncHubspotArchivedContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-archived-contacts.usecase';
+import { SyncHubspotUpdatedContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-updated-contacts.usecase';
+import { SyncHubspotArchivedDealsUseCase } from '@core/application/deals/usecases/sync-hubspot-archived-deals.usecase';
+import { SyncHubspotUpdatedDealsUseCase } from '@core/application/deals/usecases/sync-hubspot-updated-deals.usecase';
 import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
@@ -13,44 +16,64 @@ async function bootstrap() {
 
   try {
     switch (command) {
-      // ----------------- COMPANIES -----------------
+      // ----------------- COMPANIES ------------------
       case 'companies': {
         logger.log('Running ETL: companies (updated)');
-        const usecase = app.get(SyncHubspotCompaniesUpdatedUseCase);
+        const usecase = app.get(SyncHubspotUpdatedCompaniesUseCase);
         await usecase.execute();
         break;
       }
       case 'companies:deleted': {
         logger.log('Running ETL: companies (deleted/archived)');
-        const usecase = app.get(SyncHubspotCompaniesArchivedUseCase);
+        const usecase = app.get(SyncHubspotArchivedCompaniesUseCase);
         await usecase.execute();
         break;
       }
+      // -----------------  CONTACTS  -----------------
       case 'contacts': {
         logger.log('Running ETL: contacts (updated)');
-        const usecase = app.get(SyncHubspotContactsUseCase);
+        const usecase = app.get(SyncHubspotUpdatedContactsUseCase);
+        await usecase.execute();
+        break;
+      }
+      case 'contacts:deleted': {
+        logger.log('Running ETL: contacts (deleted/archived)');
+        const usecase = app.get(SyncHubspotArchivedContactsUseCase);
+        await usecase.execute();
+        break;
+      }
+      // -----------------   DEALS -  -----------------
+      case 'deals': {
+        logger.log('Running ETL: deals (updated)');
+        const usecase = app.get(SyncHubspotUpdatedDealsUseCase);
+        await usecase.execute();
+        break;
+      }
+      case 'deals:deleted': {
+        logger.log('Running ETL: deals (deleted/archived)');
+        const usecase = app.get(SyncHubspotArchivedDealsUseCase);
         await usecase.execute();
         break;
       }
       default: {
-        logger.log('Running ETL: ALL (companies updated + deleted)');
-        const companiesUpdated = app.get(SyncHubspotCompaniesUpdatedUseCase);
-        const companiesDeleted = app.get(SyncHubspotCompaniesArchivedUseCase);
-        const contactsUsecase = app.get(SyncHubspotContactsUseCase);
+        logger.log(
+          'Running ETL: ALL (companies/contacts/deals updated + deleted)',
+        );
+        const updatedCompanies = app.get(SyncHubspotUpdatedCompaniesUseCase);
+        const archivedCompanies = app.get(SyncHubspotArchivedCompaniesUseCase);
 
-        await companiesUpdated.execute();
-        await companiesDeleted.execute();
-        await contactsUsecase.execute();
-        // cuando tengas contacts/deals, los agregás acá:
-        // const contactsUpdated = appContext.get(SyncHubspotContactsUpdatedUseCase);
-        // const contactsDeleted = appContext.get(SyncHubspotContactsDeletedUseCase);
-        // const dealsUpdated = appContext.get(SyncHubspotDealsUpdatedUseCase);
-        // const dealsDeleted = appContext.get(SyncHubspotDealsDeletedUseCase);
-        //
-        // await contactsUpdated.execute();
-        // await contactsDeleted.execute();
-        // await dealsUpdated.execute();
-        // await dealsDeleted.execute();
+        const updatedContacts = app.get(SyncHubspotUpdatedContactsUseCase);
+        const archivedContacts = app.get(SyncHubspotArchivedContactsUseCase);
+
+        const updatedDeals = app.get(SyncHubspotUpdatedDealsUseCase);
+        const archivedDeals = app.get(SyncHubspotArchivedDealsUseCase);
+
+        await updatedCompanies.execute();
+        await archivedCompanies.execute();
+        await updatedContacts.execute();
+        await archivedContacts.execute();
+        await updatedDeals.execute();
+        await archivedDeals.execute();
 
         break;
       }

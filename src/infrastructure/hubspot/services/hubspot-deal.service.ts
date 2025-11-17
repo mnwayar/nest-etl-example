@@ -1,34 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
-import { HubspotContactProvider } from '@core/application/contacts/ports/hubspot-contact.provider';
-import { HubspotContactRaw } from '@core/application/contacts/types/hubspot-contact.type';
+import { HubspotDealProvider } from '@core/application/deals/ports/hubspot-deal.provider';
+import { HubspotDealRaw } from '@core/application/deals/types/hubspot-deal.type';
 import { HubspotSearchFilter } from '../../../core/application/shared/types/hubspot-search-filter.type';
 import { HubSpotService } from './hubspot.service';
 import { ConfigService } from '@nestjs/config';
 import { RestClientService } from '../../http/rest-client.service';
 
 @Injectable()
-export class HubspotContactService
-  extends HubSpotService<HubspotContactRaw>
-  implements HubspotContactProvider
+export class HubspotDealService
+  extends HubSpotService<HubspotDealRaw>
+  implements HubspotDealProvider
 {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(configService: ConfigService, restClient: RestClientService) {
     super(configService, restClient);
   }
 
-  private readonly contactProperties = [
-    'email',
-    'firstname',
-    'lastname',
-    'phone',
+  private readonly dealProperties = [
+    'dealname',
+    'dealstage',
+    'amount',
+    'closedate',
+    'createdate',
     'hs_lastmodifieddate',
     'hs_object_id',
-    'lifecyclestage',
   ];
 
-  protected mapItem(item: any): HubspotContactRaw {
+  protected mapItem(item: any): HubspotDealRaw {
     return {
       id: item.id,
       properties: item.properties ?? {},
@@ -40,39 +40,38 @@ export class HubspotContactService
     };
   }
 
-  async fetchUpdatedContacts(
+  async fetchUpdatedDeals(
     limit?: number,
     filters?: HubspotSearchFilter[],
-  ): Promise<HubspotContactRaw[]> {
-    const url = 'crm/objects/v3/contacts/search';
-
+  ): Promise<HubspotDealRaw[]> {
+    const url = 'crm/objects/v3/deals/search';
     const params: Record<string, any> = {
-      properties: this.contactProperties,
+      properties: this.dealProperties,
       filterGroups: filters?.length ? [{ filters }] : undefined,
     };
 
-    const contacts = await this.fetchEntities(url, 'post', params, limit);
+    const deals = await this.fetchEntities(url, 'post', params, limit);
 
-    if (contacts.length === 0) {
-      throw new Error('No contacts returned from HubSpot');
+    if (deals.length === 0) {
+      throw new Error('No deals returned from HubSpot');
     }
 
-    return contacts;
+    return deals;
   }
 
-  async fetchArchivedContacts(limit?: number): Promise<HubspotContactRaw[]> {
-    const url = 'crm/objects/v3/contacts';
+  async fetchArchivedDeals(limit?: number): Promise<HubspotDealRaw[]> {
+    const url = 'crm/objects/v3/deals';
     const params: Record<string, any> = {
-      properties: this.contactProperties.join(','),
+      properties: this.dealProperties.join(','),
       archived: true,
     };
 
-    const contacts = await this.fetchEntities(url, 'get', params, limit);
+    const deals = await this.fetchEntities(url, 'get', params, limit);
 
-    if (contacts.length === 0) {
-      throw new Error('No contacts returned from HubSpot');
+    if (deals.length === 0) {
+      throw new Error('No deals returned from HubSpot');
     }
 
-    return contacts;
+    return deals;
   }
 }

@@ -5,6 +5,8 @@ import { HubspotCompanyService } from './services/hubspot-company.service';
 import { HubspotCompanyProviderToken } from '@core/application/companies/ports/hubspot-company.provider';
 import { HubspotContactService } from './services/hubspot-contact.service';
 import { HubspotContactProviderToken } from '@core/application/contacts/ports/hubspot-contact.provider';
+import { HubspotDealProviderToken } from '@core/application/deals/ports/hubspot-deal.provider';
+import { HubspotDealService } from './services/hubspot-deal.service';
 
 @Module({
   imports: [HttpModule],
@@ -20,7 +22,16 @@ import { HubspotContactProviderToken } from '@core/application/contacts/ports/hu
       provide: HubspotContactProviderToken,
       useExisting: HubspotContactService,
     },
+    HubspotDealService,
+    {
+      provide: HubspotDealProviderToken,
+      useExisting: HubspotDealService,
+    },
   ],
-  exports: [HubspotCompanyProviderToken, HubspotContactProviderToken],
+  exports: [
+    HubspotCompanyProviderToken,
+    HubspotContactProviderToken,
+    HubspotDealProviderToken,
+  ],
 })
 export class HubspotModule {}

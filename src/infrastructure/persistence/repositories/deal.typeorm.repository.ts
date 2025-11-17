@@ -37,6 +37,7 @@ export class DealTypeOrmRepository implements DealRepository {
           'source_url',
           'source_created_at',
           'source_updated_at',
+          'source_archived_at',
           'source_created_year',
           'raw',
           'updated_at',

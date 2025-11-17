@@ -10,25 +10,25 @@ import {
 } from '../ports/hubspot-deal.provider';
 import { HubspotDealMapper } from '../mappers/hubspot-deal.mapper';
 import { HubspotDealRaw } from '../types/hubspot-deal.type';
-import { SyncHubspotEntityUsecase } from '../../shared/usecases/sync-hubspot-entity.usecase';
+import { SyncHubspotEntityUseCase } from '../../shared/usecases/sync-hubspot-entity.usecase';
 
 @Injectable()
-export class SyncHubspotDealsUseCase extends SyncHubspotEntityUsecase<
+export class SyncHubspotArchivedDealsUseCase extends SyncHubspotEntityUseCase<
   Deal,
   HubspotDealRaw
 > {
   constructor(
     @Inject(DealRepositoryToken)
-    dealRepository: DealRepository,
+    dealsRepository: DealRepository,
 
     @Inject(HubspotDealProviderToken)
     private readonly hubspotProvider: HubspotDealProvider,
   ) {
-    super(dealRepository);
+    super(dealsRepository);
   }
 
   protected fetchFromHubspot(limit?: number): Promise<HubspotDealRaw[]> {
-    return this.hubspotProvider.fetchDeals(limit);
+    return this.hubspotProvider.fetchArchivedDeals(limit);
   }
 
   protected mapToDomain(raw: HubspotDealRaw): Deal {

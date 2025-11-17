@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { RestClientService } from '../../http/rest-client.service';
 import { HubspotCompanyProvider } from '@core/application/companies/ports/hubspot-company.provider';
 import { HubspotCompanyRaw } from '@core/application/companies/types/hubspot-company.type';
 import { HubspotSearchFilter } from '../../../core/application/shared/types/hubspot-search-filter.type';
+import { HubSpotService } from './hubspot.service';
+import { ConfigService } from '@nestjs/config';
+import { RestClientService } from '../../http/rest-client.service';
 
 @Injectable()
-export class HubspotCompanyService implements HubspotCompanyProvider {
-  private readonly baseUrl: string;
-  private readonly token: string;
-  private readonly defaultLimit: number;
+export class HubspotCompanyService
+  extends HubSpotService<HubspotCompanyRaw>
+  implements HubspotCompanyProvider
+{
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor(configService: ConfigService, restClient: RestClientService) {
+    super(configService, restClient);
+  }
 
   private readonly companyProperties = [
     'name',
@@ -27,62 +32,29 @@ export class HubspotCompanyService implements HubspotCompanyProvider {
     'numberofemployees',
   ];
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly restClient: RestClientService,
-  ) {
-    const baseUrl: string | undefined =
-      this.configService.get<string>('hubspot.baseUrl');
-    const token: string | undefined =
-      this.configService.get<string>('hubspot.token');
-
-    if (!baseUrl || !token) {
-      throw new Error('HubSpot configuration is missing');
-    }
-
-    this.baseUrl = baseUrl;
-    this.token = token;
-    this.defaultLimit = this.configService.get<number>('hubspot.limit') ?? 10;
+  protected mapItem(item: any): HubspotCompanyRaw {
+    return {
+      id: item.id,
+      properties: item.properties ?? {},
+      archived: item.archived ?? false,
+      url: item.url,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+      archivedAt: item.archivedAt,
+    };
   }
 
   async fetchUpdatedCompanies(
     limit?: number,
     filters?: HubspotSearchFilter[],
   ): Promise<HubspotCompanyRaw[]> {
-    const pageSize = limit ?? this.defaultLimit;
-    const companies: HubspotCompanyRaw[] = [];
+    const url = 'crm/objects/v3/companies/search';
+    const params: Record<string, any> = {
+      properties: this.companyProperties,
+      filterGroups: filters?.length ? [{ filters }] : undefined,
+    };
 
-    let after: string | undefined = undefined;
-    let hasNext: boolean;
-
-    do {
-      const url = `${this.baseUrl}crm/objects/v3/companies/search`;
-      const params: Record<string, any> = {
-        limit: pageSize,
-        properties: this.companyProperties,
-        filterGroups: filters?.length ? [{ filters }] : undefined,
-      };
-
-      if (after) params.after = after;
-
-      const data = await this.restClient.post(url, params, this.token);
-      const results = data.results ?? [];
-
-      for (const item of results) {
-        companies.push({
-          id: item.id,
-          properties: item.properties ?? {},
-          archived: item.archived ?? false,
-          url: item.url,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt,
-          archivedAt: item.archivedAt,
-        });
-      }
-
-      after = data.paging?.next?.after;
-      hasNext = Boolean(after);
-    } while (hasNext);
+    const companies = await this.fetchEntities(url, 'post', params, limit);
 
     if (companies.length === 0) {
       throw new Error('No companies returned from HubSpot');
@@ -92,40 +64,13 @@ export class HubspotCompanyService implements HubspotCompanyProvider {
   }
 
   async fetchArchivedCompanies(limit?: number): Promise<HubspotCompanyRaw[]> {
-    const pageSize = limit ?? this.defaultLimit;
-    const companies: HubspotCompanyRaw[] = [];
+    const url = 'crm/objects/v3/companies';
+    const params: Record<string, any> = {
+      properties: this.companyProperties.join(','),
+      archived: true,
+    };
 
-    let after: string | undefined = undefined;
-    let hasNext: boolean;
-
-    do {
-      const url = `${this.baseUrl}crm/objects/v3/companies`;
-      const params: Record<string, any> = {
-        limit: pageSize,
-        properties: this.companyProperties.join(','),
-        archived: true,
-      };
-
-      if (after) params.after = after;
-
-      const data = await this.restClient.get(url, params, this.token);
-      const results = data.results ?? [];
-
-      for (const item of results) {
-        companies.push({
-          id: item.id,
-          properties: item.properties ?? {},
-          archived: item.archived ?? false,
-          url: item.url,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt,
-          archivedAt: item.archivedAt,
-        });
-      }
-
-      after = data.paging?.next?.after;
-      hasNext = Boolean(after);
-    } while (hasNext);
+    const companies = await this.fetchEntities(url, 'get', params, limit);
 
     if (companies.length === 0) {
       throw new Error('No companies returned from HubSpot');

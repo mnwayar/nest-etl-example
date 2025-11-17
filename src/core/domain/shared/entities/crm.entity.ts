@@ -7,7 +7,7 @@ export abstract class CrmEntity {
     public sourceUrl: string | null,
     public sourceCreatedAt: Date | null,
     public sourceUpdatedAt: Date | null,
-    public sourceDeletedAt: Date | null,
+    public sourceArchivedAt: Date | null,
     public raw?: Record<string, any>,
   ) {}
 

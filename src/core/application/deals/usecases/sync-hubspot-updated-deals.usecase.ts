@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Company } from '@core/domain/companies/company.entity';
+import { Deal } from '@core/domain/deals/deal.entity';
 import {
-  CompanyRepository,
-  CompanyRepositoryToken,
-} from '@core/domain/companies/company.repository';
+  DealRepository,
+  DealRepositoryToken,
+} from '@core/domain/deals/deal.repository';
 import {
-  HubspotCompanyProvider,
-  HubspotCompanyProviderToken,
-} from '../ports/hubspot-company.provider';
-import { HubspotCompanyMapper } from '../mappers/hubspot-company.mapper';
-import { HubspotCompanyRaw } from '../types/hubspot-company.type';
-import { SyncHubspotEntityUsecase } from '../../shared/usecases/sync-hubspot-entity.usecase';
+  HubspotDealProvider,
+  HubspotDealProviderToken,
+} from '../ports/hubspot-deal.provider';
+import { HubspotDealMapper } from '../mappers/hubspot-deal.mapper';
+import { HubspotDealRaw } from '../types/hubspot-deal.type';
+import { SyncHubspotEntityUseCase } from '../../shared/usecases/sync-hubspot-entity.usecase';
 import {
   CrmObjectType,
   CrmSyncCheckpoint,
@@ -22,24 +22,24 @@ import {
 import { HubspotSearchFilter } from '../../shared/types/hubspot-search-filter.type';
 
 @Injectable()
-export class SyncHubspotCompaniesUpdatedUseCase extends SyncHubspotEntityUsecase<
-  Company,
-  HubspotCompanyRaw
+export class SyncHubspotUpdatedDealsUseCase extends SyncHubspotEntityUseCase<
+  Deal,
+  HubspotDealRaw
 > {
   constructor(
-    @Inject(CompanyRepositoryToken)
-    companyRepository: CompanyRepository,
+    @Inject(DealRepositoryToken)
+    dealRepository: DealRepository,
 
-    @Inject(HubspotCompanyProviderToken)
-    private readonly hubspotProvider: HubspotCompanyProvider,
+    @Inject(HubspotDealProviderToken)
+    private readonly hubspotProvider: HubspotDealProvider,
 
     @Inject(CrmSyncCheckpointRepositoryToken)
     private readonly crmSyncRepository: CrmSyncCheckpointRepository,
   ) {
-    super(companyRepository);
+    super(dealRepository);
   }
 
-  private syncObjectType: CrmObjectType = 'COMPANY';
+  private syncObjectType: CrmObjectType = 'DEAL';
   private filters: HubspotSearchFilter[] = [];
 
   protected async beforeExecute(): Promise<void> {
@@ -56,21 +56,19 @@ export class SyncHubspotCompaniesUpdatedUseCase extends SyncHubspotEntityUsecase
     ];
   }
 
-  protected async fetchFromHubspot(
-    limit?: number,
-  ): Promise<HubspotCompanyRaw[]> {
-    return this.hubspotProvider.fetchUpdatedCompanies(limit, this.filters);
+  protected async fetchFromHubspot(limit?: number): Promise<HubspotDealRaw[]> {
+    return this.hubspotProvider.fetchUpdatedDeals(limit, this.filters);
   }
 
-  protected mapToDomain(raw: HubspotCompanyRaw): Company {
-    return HubspotCompanyMapper.toDomain(raw);
+  protected mapToDomain(raw: HubspotDealRaw): Deal {
+    return HubspotDealMapper.toDomain(raw);
   }
 
-  protected async afterExecute(_entities: Company[]): Promise<void> {
+  protected async afterExecute(_entities: Deal[]): Promise<void> {
     if (!_entities.length) return;
 
     let lastModifiedDate: Date = _entities[0].sourceUpdatedAt ?? new Date();
-    _entities.map((entity: Company) => {
+    _entities.map((entity: Deal) => {
       if (entity.sourceUpdatedAt && entity.sourceUpdatedAt > lastModifiedDate) {
         lastModifiedDate = entity.sourceUpdatedAt;
       }

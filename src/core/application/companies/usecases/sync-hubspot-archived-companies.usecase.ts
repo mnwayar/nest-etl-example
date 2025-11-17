@@ -10,10 +10,10 @@ import {
 } from '../ports/hubspot-company.provider';
 import { HubspotCompanyMapper } from '../mappers/hubspot-company.mapper';
 import { HubspotCompanyRaw } from '../types/hubspot-company.type';
-import { SyncHubspotEntityUsecase } from '../../shared/usecases/sync-hubspot-entity.usecase';
+import { SyncHubspotEntityUseCase } from '../../shared/usecases/sync-hubspot-entity.usecase';
 
 @Injectable()
-export class SyncHubspotCompaniesArchivedUseCase extends SyncHubspotEntityUsecase<
+export class SyncHubspotArchivedCompaniesUseCase extends SyncHubspotEntityUseCase<
   Company,
   HubspotCompanyRaw
 > {

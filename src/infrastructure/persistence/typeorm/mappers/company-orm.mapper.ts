@@ -22,7 +22,7 @@ export class CompanyOrmMapper {
       sourceUrl: trimOrNull(domain.sourceUrl),
       sourceCreatedAt: domain.sourceCreatedAt ?? null,
       sourceUpdatedAt: domain.sourceUpdatedAt ?? null,
-      sourceDeletedAt: domain.sourceDeletedAt ?? null,
+      sourceArchivedAt: domain.sourceArchivedAt ?? null,
       sourceCreatedYear: yearUtcOrNull(domain.sourceCreatedAt),
     };
   }
@@ -40,7 +40,7 @@ export class CompanyOrmMapper {
       trimOrNull(entity.sourceUrl),
       entity.sourceCreatedAt,
       entity.sourceUpdatedAt,
-      entity.sourceDeletedAt,
+      entity.sourceArchivedAt,
       entity.raw ?? undefined,
     );
   }
