@@ -53,11 +53,6 @@ export class SyncHubspotUpdatedContactsUseCase extends SyncHubspotEntityUseCase<
         operator: 'GT',
         value: lastRunAt,
       },
-      {
-        propertyName: 'lifecyclestage',
-        operator: 'EQ',
-        value: 'lead',
-      },
     ];
   }
 
