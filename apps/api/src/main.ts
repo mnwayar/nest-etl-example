@@ -1,7 +1,9 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { json } from 'express';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Request, Response, json } from 'express';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +11,29 @@ async function bootstrap() {
 
   app.enableCors();
   app.use(json({ limit: '60mb' }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  );
+
+  const config = new DocumentBuilder()
+    .setTitle('HubSpot ETL API')
+    .setDescription(
+      'HTTP API for the HubSpot ETL / sync service (companies, contacts, deals, and associations).',
+    )
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get('/api/docs-json', (req: Request, res: Response) => {
+    res.json(document);
+  });
 
   const port = configService.get<number>('api.port') ?? 3000;
   await app.listen(port);

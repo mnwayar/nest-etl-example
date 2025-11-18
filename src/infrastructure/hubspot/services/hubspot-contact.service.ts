@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { HubspotContactProvider } from '@core/application/contacts/ports/hubspot-contact.provider';
 import { HubspotContactRaw } from '@core/application/contacts/types/hubspot-contact.type';
 import { HubspotSearchFilter } from '../../../core/application/shared/types/hubspot-search-filter.type';
@@ -13,6 +13,8 @@ export class HubspotContactService
   extends HubSpotService<HubspotContactRaw>
   implements HubspotContactProvider
 {
+  private readonly logger = new Logger(HubspotContactService.name);
+
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(configService: ConfigService, restClient: RestClientService) {
     super(configService, restClient);
@@ -54,7 +56,7 @@ export class HubspotContactService
     const contacts = await this.fetchEntities(url, 'post', params, limit);
 
     if (contacts.length === 0) {
-      throw new Error('No contacts returned from HubSpot');
+      this.logger.log('No contacts returned from HubSpot');
     }
 
     return contacts;
@@ -70,7 +72,7 @@ export class HubspotContactService
     const contacts = await this.fetchEntities(url, 'get', params, limit);
 
     if (contacts.length === 0) {
-      throw new Error('No contacts returned from HubSpot');
+      this.logger.log('No contacts returned from HubSpot');
     }
 
     return contacts;

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { HubspotDealProvider } from '@core/application/deals/ports/hubspot-deal.provider';
 import { HubspotDealRaw } from '@core/application/deals/types/hubspot-deal.type';
 import { HubspotSearchFilter } from '../../../core/application/shared/types/hubspot-search-filter.type';
@@ -13,6 +13,8 @@ export class HubspotDealService
   extends HubSpotService<HubspotDealRaw>
   implements HubspotDealProvider
 {
+  private readonly logger = new Logger(HubspotDealService.name);
+
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(configService: ConfigService, restClient: RestClientService) {
     super(configService, restClient);
@@ -53,7 +55,7 @@ export class HubspotDealService
     const deals = await this.fetchEntities(url, 'post', params, limit);
 
     if (deals.length === 0) {
-      throw new Error('No deals returned from HubSpot');
+      this.logger.log('No deals returned from HubSpot');
     }
 
     return deals;
@@ -69,7 +71,7 @@ export class HubspotDealService
     const deals = await this.fetchEntities(url, 'get', params, limit);
 
     if (deals.length === 0) {
-      throw new Error('No deals returned from HubSpot');
+      this.logger.log('No deals returned from HubSpot');
     }
 
     return deals;

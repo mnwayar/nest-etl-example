@@ -1,4 +1,5 @@
 import { Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { SyncHubspotUpdatedCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-updated-companies.usecase';
 import { SyncHubspotArchivedCompaniesUseCase } from '@core/application/companies/usecases/sync-hubspot-archived-companies.usecase';
 import { SyncHubspotUpdatedContactsUseCase } from '@core/application/contacts/usecases/sync-hubspot-updated-contacts.usecase';
@@ -7,6 +8,7 @@ import { SyncHubspotUpdatedDealsUseCase } from '../../../core/application/deals/
 import { SyncHubspotArchivedDealsUseCase } from '../../../core/application/deals/usecases/sync-hubspot-archived-deals.usecase';
 import { SyncHubspotContactAssociationsUseCase } from '../../../core/application/associations/usecases/sync-hubspot-contact-associations.usecase';
 
+@ApiTags('ETL')
 @Controller('etl/hubspot')
 export class EtlController {
   constructor(

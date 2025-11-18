@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { HubspotCompanyProvider } from '@core/application/companies/ports/hubspot-company.provider';
 import { HubspotCompanyRaw } from '@core/application/companies/types/hubspot-company.type';
 import { HubspotSearchFilter } from '../../../core/application/shared/types/hubspot-search-filter.type';
@@ -13,6 +13,8 @@ export class HubspotCompanyService
   extends HubSpotService<HubspotCompanyRaw>
   implements HubspotCompanyProvider
 {
+  private readonly logger = new Logger(HubspotCompanyService.name);
+
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(configService: ConfigService, restClient: RestClientService) {
     super(configService, restClient);
@@ -57,7 +59,7 @@ export class HubspotCompanyService
     const companies = await this.fetchEntities(url, 'post', params, limit);
 
     if (companies.length === 0) {
-      throw new Error('No companies returned from HubSpot');
+      this.logger.log('No companies returned from HubSpot');
     }
 
     return companies;
@@ -73,7 +75,7 @@ export class HubspotCompanyService
     const companies = await this.fetchEntities(url, 'get', params, limit);
 
     if (companies.length === 0) {
-      throw new Error('No companies returned from HubSpot');
+      this.logger.log('No companies returned from HubSpot');
     }
 
     return companies;
