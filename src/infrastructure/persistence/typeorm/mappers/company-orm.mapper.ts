@@ -1,4 +1,7 @@
-import { Company } from '@core/domain/companies/company.entity';
+import {
+  Company,
+  CompanyContactSummary,
+} from '@core/domain/companies/company.entity';
 import { CompanyOrmEntity } from '../entities/company.orm-entity';
 import {
   trimOrNull,
@@ -28,6 +31,25 @@ export class CompanyOrmMapper {
   }
 
   static toDomain(entity: CompanyOrmEntity): Company {
+    const contacts =
+      entity.contactAssociations?.reduce<CompanyContactSummary[]>(
+        (list, association) => {
+          const contact = association.contact;
+          if (!contact) {
+            return list;
+          }
+
+          list.push({
+            id: contact.sourceId,
+            firstname: contact.firstname,
+            lastname: contact.lastname,
+          });
+
+          return list;
+        },
+        [],
+      ) ?? [];
+
     return new Company(
       trimOrNull(entity.name),
       trimLowerOrNull(entity.websiteDomain),
@@ -42,6 +64,7 @@ export class CompanyOrmMapper {
       entity.sourceUpdatedAt,
       entity.sourceArchivedAt,
       entity.raw ?? undefined,
+      contacts,
     );
   }
 }

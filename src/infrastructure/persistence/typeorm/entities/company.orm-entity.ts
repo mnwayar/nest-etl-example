@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { CrmOrmEntity } from './shared/crm.orm-entity';
+import { ContactAssociationOrmEntity } from './contact-association.orm-entity';
 
 @Entity({ name: 'companies' })
 export class CompanyOrmEntity extends CrmOrmEntity {
@@ -20,4 +21,10 @@ export class CompanyOrmEntity extends CrmOrmEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   industry!: string | null;
+
+  @OneToMany(
+    () => ContactAssociationOrmEntity,
+    (association) => association.company,
+  )
+  contactAssociations?: ContactAssociationOrmEntity[];
 }

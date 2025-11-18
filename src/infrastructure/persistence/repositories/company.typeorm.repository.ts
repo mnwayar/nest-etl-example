@@ -60,8 +60,11 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
   }
 
   async getById(id: string): Promise<Company | null> {
-    const company = await this.repository.findOneBy({
-      sourceId: id,
+    const company = await this.repository.findOne({
+      where: {
+        sourceId: id,
+      },
+      relations: ['contactAssociations', 'contactAssociations.contact'],
     });
 
     if (!company) return null;
