@@ -1,4 +1,4 @@
-import { Deal } from '@core/domain/deals/deal.entity';
+import { Deal, DealContactSummary } from '@core/domain/deals/deal.entity';
 import { DealOrmEntity } from '../entities/deal.orm-entity';
 import {
   trimOrNull,
@@ -24,6 +24,26 @@ export class DealOrmMapper {
   }
 
   static toDomain(entity: DealOrmEntity): Deal {
+    const contacts =
+      entity.contactAssociations?.reduce<DealContactSummary[]>(
+        (list, association) => {
+          if (association.targetType !== 'DEAL') {
+            return list;
+          }
+
+          const contact = association.contact;
+
+          list.push({
+            id: contact.sourceId,
+            firstname: trimOrNull(contact.firstname),
+            lastname: trimOrNull(contact.lastname),
+          });
+
+          return list;
+        },
+        [],
+      ) ?? [];
+
     return new Deal(
       trimOrNull(entity.name),
       trimLowerOrNull(entity.stage),
@@ -36,6 +56,7 @@ export class DealOrmMapper {
       entity.sourceUpdatedAt,
       entity.sourceArchivedAt,
       entity.raw ?? undefined,
+      contacts,
     );
   }
 }

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Deal } from '@core/domain/deals/deal.entity';
+import { DealContactSummaryDto } from './deal-contact-summary.response.dto';
 
 export class DealResponseDto {
   @ApiProperty({ description: 'HubSpot source identifier' })
@@ -52,6 +53,12 @@ export class DealResponseDto {
   })
   updatedAt!: Date | null;
 
+  @ApiProperty({
+    description: 'Contacts associated with the deal',
+    type: () => [DealContactSummaryDto],
+  })
+  contacts!: DealContactSummaryDto[];
+
   static fromDomain(deal: Deal): DealResponseDto {
     const dto = new DealResponseDto();
 
@@ -64,6 +71,9 @@ export class DealResponseDto {
     dto.url = deal.sourceUrl ?? null;
     dto.createdAt = deal.sourceCreatedAt ?? null;
     dto.updatedAt = deal.sourceUpdatedAt ?? null;
+    dto.contacts = deal.contacts.map((contact) =>
+      DealContactSummaryDto.fromDomain(contact),
+    );
 
     return dto;
   }

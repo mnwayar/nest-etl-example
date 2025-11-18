@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { CrmOrmEntity } from './shared/crm.orm-entity';
+import { ContactAssociationOrmEntity } from './contact-association.orm-entity';
 
 @Entity({ name: 'deals' })
 export class DealOrmEntity extends CrmOrmEntity {
@@ -14,4 +15,10 @@ export class DealOrmEntity extends CrmOrmEntity {
 
   @Column({ type: 'timestamptz', nullable: true })
   closeDate!: Date | null;
+
+  @OneToMany(
+    () => ContactAssociationOrmEntity,
+    (association) => association.deal,
+  )
+  contactAssociations?: ContactAssociationOrmEntity[];
 }

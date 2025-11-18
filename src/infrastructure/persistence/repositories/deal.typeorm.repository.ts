@@ -58,8 +58,11 @@ export class DealTypeOrmRepository implements DealRepository {
   }
 
   async getById(id: string): Promise<Deal | null> {
-    const deal = await this.repository.findOneBy({
-      sourceId: id,
+    const deal = await this.repository.findOne({
+      where: {
+        sourceId: id,
+      },
+      relations: ['contactAssociations', 'contactAssociations.contact'],
     });
 
     if (!deal) return null;
