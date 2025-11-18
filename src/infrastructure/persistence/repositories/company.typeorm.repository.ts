@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompanyRepository } from '@core/domain/companies/company.repository';
 import { Company } from '@core/domain/companies/company.entity';
+import { InfrastructureError } from '@shared/errors';
 import { CompanyOrmEntity } from '../typeorm/entities/company.orm-entity';
 import { CompanyOrmMapper } from '../typeorm/mappers/company-orm.mapper';
 
@@ -22,53 +23,65 @@ export class CompanyTypeOrmRepository implements CompanyRepository {
       return CompanyOrmMapper.toOrm(company);
     });
 
-    await this.repository
-      .createQueryBuilder()
-      .insert()
-      .into(CompanyOrmEntity)
-      .values(entities)
-      .orUpdate(
-        [
-          'name',
-          'website_domain',
-          'source_status',
-          'phone',
-          'city',
-          'country',
-          'industry',
-          'source_url',
-          'source_created_at',
-          'source_updated_at',
-          'source_archived_at',
-          'source_created_year',
-          'raw',
-          'updated_at',
-        ],
-        ['source_id'],
-      )
-      .execute();
+    try {
+      await this.repository
+        .createQueryBuilder()
+        .insert()
+        .into(CompanyOrmEntity)
+        .values(entities)
+        .orUpdate(
+          [
+            'name',
+            'website_domain',
+            'source_status',
+            'phone',
+            'city',
+            'country',
+            'industry',
+            'source_url',
+            'source_created_at',
+            'source_updated_at',
+            'source_archived_at',
+            'source_created_year',
+            'raw',
+            'updated_at',
+          ],
+          ['source_id'],
+        )
+        .execute();
+    } catch (error) {
+      throw new InfrastructureError('Failed to sync companies', error);
+    }
   }
 
   async getAll(): Promise<Company[]> {
-    const companies = await this.repository.find({
-      order: { id: 'ASC' },
-    });
+    try {
+      const companies = await this.repository.find({
+        order: { id: 'ASC' },
+      });
 
-    return companies.map((company) => {
-      return CompanyOrmMapper.toDomain(company);
-    });
+      return companies.map((company) => {
+        return CompanyOrmMapper.toDomain(company);
+      });
+    } catch (error) {
+      throw new InfrastructureError('Failed to load companies', error);
+    }
   }
 
   async getById(id: string): Promise<Company | null> {
-    const company = await this.repository.findOne({
-      where: {
-        sourceId: id,
-      },
-      relations: ['contactAssociations', 'contactAssociations.contact'],
-    });
+    try {
+      const company = await this.repository.findOne({
+        where: {
+          sourceId: id,
+        },
+        relations: ['contactAssociations', 'contactAssociations.contact'],
+      });
 
-    if (!company) return null;
+      if (!company) return null;
 
-    return CompanyOrmMapper.toDomain(company);
+      return CompanyOrmMapper.toDomain(company);
+    } catch (error) {
+      throw new InfrastructureError('Failed to load company', error);
+    }
   }
 }

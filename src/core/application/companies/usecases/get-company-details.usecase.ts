@@ -12,6 +12,6 @@ export class GetCompanyDetailsUseCase extends GetEntityDetailsUseCase<Company> {
     @Inject(CompanyRepositoryToken)
     companyRepository: CompanyRepository,
   ) {
-    super(companyRepository);
+    super(companyRepository, 'Company');
   }
 }

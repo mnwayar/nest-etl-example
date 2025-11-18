@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  NotFoundException,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ListAllCompaniesUseCase } from '@core/application/companies/usecases/list-all-companies.usecase';
 import { GetCompanyDetailsUseCase } from '@core/application/companies/usecases/get-company-details.usecase';
@@ -33,11 +26,6 @@ export class CompaniesController {
   @ApiOkResponse({ type: CompanyResponseDto })
   async findOne(@Param('id') id: string) {
     const company = await this.getCompanyDetails.execute(id);
-
-    if (!company) {
-      throw new NotFoundException('Company not found');
-    }
-
     return CompanyResponseDto.fromDomain(company);
   }
 }

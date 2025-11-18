@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  NotFoundException,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ListAllContactsUseCase } from '@core/application/contacts/usecases/list-all-contacts.usecase';
 import { GetContactDetailsUseCase } from '@core/application/contacts/usecases/get-contact-details.usecase';
@@ -33,11 +26,6 @@ export class ContactsController {
   @ApiOkResponse({ type: ContactResponseDto })
   async findOne(@Param('id') id: string) {
     const contact = await this.getContactDetails.execute(id);
-
-    if (!contact) {
-      throw new NotFoundException('Contact not found');
-    }
-
     return ContactResponseDto.fromDomain(contact);
   }
 }

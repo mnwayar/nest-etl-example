@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  NotFoundException,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ListAllDealsUseCase } from '@core/application/deals/usecases/list-all-deals.usecase';
 import { GetDealDetailsUseCase } from '@core/application/deals/usecases/get-deal-details.usecase';
@@ -33,11 +26,6 @@ export class DealsController {
   @ApiOkResponse({ type: DealResponseDto })
   async findOne(@Param('id') id: string) {
     const deal = await this.getDealDetails.execute(id);
-
-    if (!deal) {
-      throw new NotFoundException('Deal not found');
-    }
-
     return DealResponseDto.fromDomain(deal);
   }
 }

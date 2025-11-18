@@ -12,6 +12,6 @@ export class GetDealDetailsUseCase extends GetEntityDetailsUseCase<Deal> {
     @Inject(DealRepositoryToken)
     dealRepository: DealRepository,
   ) {
-    super(dealRepository);
+    super(dealRepository, 'Deal');
   }
 }

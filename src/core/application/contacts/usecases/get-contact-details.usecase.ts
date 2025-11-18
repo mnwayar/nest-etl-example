@@ -12,6 +12,6 @@ export class GetContactDetailsUseCase extends GetEntityDetailsUseCase<Contact> {
     @Inject(ContactRepositoryToken)
     contactRepository: ContactRepository,
   ) {
-    super(contactRepository);
+    super(contactRepository, 'Contact');
   }
 }

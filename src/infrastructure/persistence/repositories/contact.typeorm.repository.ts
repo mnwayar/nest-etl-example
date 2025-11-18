@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContactRepository } from '@core/domain/contacts/contact.repository';
 import { Contact } from '@core/domain/contacts/contact.entity';
+import { InfrastructureError } from '@shared/errors';
 import { ContactOrmEntity } from '../typeorm/entities/contact.orm-entity';
 import { ContactOrmMapper } from '../typeorm/mappers/contact-orm.mapper';
 
@@ -22,69 +23,88 @@ export class ContactTypeOrmRepository implements ContactRepository {
       return ContactOrmMapper.toOrm(contact);
     });
 
-    await this.repository
-      .createQueryBuilder()
-      .insert()
-      .into(ContactOrmEntity)
-      .values(entities)
-      .orUpdate(
-        [
-          'email',
-          'firstname',
-          'lastname',
-          'phone',
-          'source_status',
-          'source_url',
-          'source_created_at',
-          'source_updated_at',
-          'source_archived_at',
-          'source_created_year',
-          'raw',
-          'updated_at',
-        ],
-        ['source_id'],
-      )
-      .execute();
+    try {
+      await this.repository
+        .createQueryBuilder()
+        .insert()
+        .into(ContactOrmEntity)
+        .values(entities)
+        .orUpdate(
+          [
+            'email',
+            'firstname',
+            'lastname',
+            'phone',
+            'source_status',
+            'source_url',
+            'source_created_at',
+            'source_updated_at',
+            'source_archived_at',
+            'source_created_year',
+            'raw',
+            'updated_at',
+          ],
+          ['source_id'],
+        )
+        .execute();
+    } catch (error) {
+      throw new InfrastructureError('Failed to sync contacts', error);
+    }
   }
 
   async getAll(): Promise<Contact[]> {
-    const contacts = await this.repository.find({
-      order: { id: 'ASC' },
-    });
+    try {
+      const contacts = await this.repository.find({
+        order: { id: 'ASC' },
+      });
 
-    return contacts.map((contact) => {
-      return ContactOrmMapper.toDomain(contact);
-    });
+      return contacts.map((contact) => {
+        return ContactOrmMapper.toDomain(contact);
+      });
+    } catch (error) {
+      throw new InfrastructureError('Failed to load contacts', error);
+    }
   }
 
   async getById(id: string): Promise<Contact | null> {
-    const contact = await this.repository.findOne({
-      where: {
-        sourceId: id,
-      },
-      relations: [
-        'contactAssociations',
-        'contactAssociations.company',
-        'contactAssociations.deal',
-      ],
-    });
+    try {
+      const contact = await this.repository.findOne({
+        where: {
+          sourceId: id,
+        },
+        relations: [
+          'contactAssociations',
+          'contactAssociations.company',
+          'contactAssociations.deal',
+        ],
+      });
 
-    if (!contact) return null;
+      if (!contact) return null;
 
-    return ContactOrmMapper.toDomain(contact);
+      return ContactOrmMapper.toDomain(contact);
+    } catch (error) {
+      throw new InfrastructureError('Failed to load contact', error);
+    }
   }
 
   async listSourceIdsUpdatedSince(since: Date | null): Promise<string[]> {
-    const query = this.repository
-      .createQueryBuilder('c')
-      .select('c.sourceId', 'sourceId');
+    try {
+      const query = this.repository
+        .createQueryBuilder('c')
+        .select('c.sourceId', 'sourceId');
 
-    if (since) {
-      query.where('c.sourceUpdatedAt > :since', { since });
+      if (since) {
+        query.where('c.sourceUpdatedAt > :since', { since });
+      }
+
+      const rows = await query.getRawMany<{ sourceId: string }>();
+
+      return rows.map((r) => r.sourceId);
+    } catch (error) {
+      throw new InfrastructureError(
+        'Failed to list contacts updated since date',
+        error,
+      );
     }
-
-    const rows = await query.getRawMany<{ sourceId: string }>();
-
-    return rows.map((r) => r.sourceId);
   }
 }
