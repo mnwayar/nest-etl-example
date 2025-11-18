@@ -1,4 +1,4 @@
-version: "3.9"
+version: '3.9'
 
 services:
   db:
@@ -10,26 +10,44 @@ services:
       POSTGRES_PASSWORD: etl_pass
       POSTGRES_DB: etl_db
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
       - etl-net
 
-  app:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: etl_app
+    image: nest-etl-example
+    container_name: etl_api
     restart: unless-stopped
     env_file:
       - .env
     depends_on:
       - db
     ports:
-      - "3000:3000"
+      - '3000:3000'
     networks:
       - etl-net
+    # explícito, aunque el CMD del Dockerfile ya hace esto
+    command: ['dist/apps/api/main.js']
+
+  etl-runner:
+    image: nest-etl-example
+    container_name: etl_runner
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - etl-net
+    # acá pisamos el entrypoint para correr el runner
+    entrypoint: ['dist/apps/etl-runner/main.js']
+    # opcional: así no se levanta con `docker compose up` normal
+    profiles:
+      - etl
 
 networks:
   etl-net:
