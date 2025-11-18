@@ -58,8 +58,15 @@ export class ContactTypeOrmRepository implements ContactRepository {
   }
 
   async getById(id: string): Promise<Contact | null> {
-    const contact = await this.repository.findOneBy({
-      sourceId: id,
+    const contact = await this.repository.findOne({
+      where: {
+        sourceId: id,
+      },
+      relations: [
+        'contactAssociations',
+        'contactAssociations.company',
+        'contactAssociations.deal',
+      ],
     });
 
     if (!contact) return null;

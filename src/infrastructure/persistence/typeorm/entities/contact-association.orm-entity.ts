@@ -45,7 +45,7 @@ export class ContactAssociationOrmEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   associationCategory!: string | null;
 
-  @ManyToOne(() => ContactOrmEntity, (contact) => contact.id, {
+  @ManyToOne(() => ContactOrmEntity, (contact) => contact.contactAssociations, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'contact_id' })

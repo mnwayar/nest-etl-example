@@ -35,9 +35,6 @@ export class CompanyOrmMapper {
       entity.contactAssociations?.reduce<CompanyContactSummary[]>(
         (list, association) => {
           const contact = association.contact;
-          if (!contact) {
-            return list;
-          }
 
           list.push({
             id: contact.sourceId,

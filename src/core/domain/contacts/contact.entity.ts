@@ -1,5 +1,15 @@
 import { CrmEntity, CrmEntityStatus } from '../shared/entities/crm.entity';
 
+export type ContactCompanySummary = {
+  id: string;
+  name: string | null;
+};
+
+export type ContactDealSummary = {
+  id: string;
+  name: string | null;
+};
+
 export class Contact extends CrmEntity {
   constructor(
     public email: string | null,
@@ -14,6 +24,8 @@ export class Contact extends CrmEntity {
     sourceUpdatedAt: Date | null,
     sourceArchivedAt: Date | null,
     raw?: Record<string, any>,
+    public readonly companies: ContactCompanySummary[] = [],
+    public readonly deals: ContactDealSummary[] = [],
   ) {
     super(
       sourceId,

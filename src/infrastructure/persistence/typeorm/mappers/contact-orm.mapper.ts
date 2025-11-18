@@ -1,4 +1,8 @@
-import { Contact } from '@core/domain/contacts/contact.entity';
+import {
+  Contact,
+  ContactCompanySummary,
+  ContactDealSummary,
+} from '@core/domain/contacts/contact.entity';
 import { ContactOrmEntity } from '../entities/contact.orm-entity';
 import {
   trimOrNull,
@@ -26,6 +30,49 @@ export class ContactOrmMapper {
   }
 
   static toDomain(entity: ContactOrmEntity): Contact {
+    const associations = entity.contactAssociations ?? [];
+    const companies = associations.reduce<ContactCompanySummary[]>(
+      (result, association) => {
+        if (association.targetType !== 'COMPANY') {
+          return result;
+        }
+
+        const id = association.company?.sourceId ?? null;
+        if (!id) {
+          return result;
+        }
+
+        result.push({
+          id,
+          name: trimOrNull(association.company?.name ?? null),
+        });
+
+        return result;
+      },
+      [],
+    );
+
+    const deals = associations.reduce<ContactDealSummary[]>(
+      (result, association) => {
+        if (association.targetType !== 'DEAL') {
+          return result;
+        }
+
+        const id = association.deal?.sourceId ?? null;
+        if (!id) {
+          return result;
+        }
+
+        result.push({
+          id,
+          name: trimOrNull(association.deal?.name ?? null),
+        });
+
+        return result;
+      },
+      [],
+    );
+
     return new Contact(
       trimLowerOrNull(entity.email),
       trimOrNull(entity.firstname),
@@ -38,6 +85,8 @@ export class ContactOrmMapper {
       entity.sourceUpdatedAt,
       entity.sourceArchivedAt,
       entity.raw ?? undefined,
+      companies,
+      deals,
     );
   }
 }
